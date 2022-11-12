@@ -45,4 +45,19 @@ final class CoreDataManager {
             return []
         }
     }
+    
+    func delete(indexPath : Int) {
+        do {
+            let fetchRequest = NSFetchRequest<Stocks>(entityName: "Stocks")
+            let stocks = try moc.fetch(fetchRequest)
+            try stocks.forEach {
+                if stocks[indexPath] === $0 {
+                    moc.delete($0)
+                    try moc.save()
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }

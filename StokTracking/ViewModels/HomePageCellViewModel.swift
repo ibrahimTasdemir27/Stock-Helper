@@ -39,18 +39,10 @@ final class HomePageCellViewModel {
         onUpdate()
     }
     
-    func parseCoreData(data : Data ,completion : @escaping ([TitleModel]) -> Void) {
-        do {
-                let data = try JSONDecoder().decode([String : [TitleModel]].self, from: data)
-                data.forEach {_ in
-                    let titlex = data.values
-                    titlex.forEach { model in
-                        completion(model)
-                    }
-                }
-        } catch {
-            print(error.localizedDescription)
-        }
+    func removeItem(indexPath : Int) {
+        superTitleCells.remove(at: indexPath)
+        coreDataManager.delete(indexPath: indexPath)
+        
     }
     
     func numberOfRows() -> Int {
@@ -69,4 +61,20 @@ final class HomePageCellViewModel {
         coordinator?.startAddProduct()
     }
     
+}
+
+extension HomePageCellViewModel {
+    func parseCoreData(data : Data ,completion : @escaping ([TitleModel]) -> Void) {
+        do {
+                let data = try JSONDecoder().decode([String : [TitleModel]].self, from: data)
+                data.forEach {_ in
+                    let titlex = data.values
+                    titlex.forEach { model in
+                        completion(model)
+                    }
+                }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }

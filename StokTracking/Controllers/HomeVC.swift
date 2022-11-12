@@ -84,4 +84,14 @@ extension HomeVC : UITableViewDataSource , UITableViewDelegate {
         }
         viewModel.selectedItem(indexPath.row)
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
+        if editingStyle == .delete {
+            viewModel.removeItem(indexPath: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    
 }
+
