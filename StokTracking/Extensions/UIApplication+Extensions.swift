@@ -8,7 +8,12 @@
 import UIKit
 
 extension UIApplication {
-    class func topViewController(viewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    class func topViewController(viewController: UIViewController? = UIApplication
+        .shared
+        .connectedScenes
+        .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController}
+        .first
+    ) -> UIViewController? {
         if let nav = viewController as? UINavigationController {
             
             return topViewController(viewController: nav.visibleViewController)

@@ -1,45 +1,55 @@
-//
-//  HomeVC.swift
-//  StokTracking
-//
-//  Created by İbrahim Taşdemir on 6.11.2022.
-//
 
 import UIKit
 import SnapKit
 
 class HomeVC : UIViewController {
     
+    lazy var tableView : UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.rowHeight = screenHeight * 0.2 + 10
+        tableView.register(HomePageCell.self, forCellReuseIdentifier: HomePageCell.identifier)
+        return tableView
+    }()
+    lazy var plusProduct: UIButton = {
+        let button = UIButton()
+        button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
+        button.addTarget(self, action: #selector(tappedAdd), for: .touchUpInside)
+        button.tintColor = .tabBarColor
+        return button
+    }()
     
-    private let tableView = UITableView()
-    private let plusProduct = UIButton()
-    var viewModel : HomePageCellViewModel!
+    var viewModel : FeaturesListViewModel!
+    
+    var delegate: ArrangeProductDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad()
+        setupUI()
         viewModel.onUpdate = {
             self.tableView.reloadData()
         }
-        configure()
-        setupTableViews()
+        setupHierarchy()
     }
     
-    private func setupTableViews() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(HomePageCell.self, forCellReuseIdentifier: "HomePageCell")
-        
-        plusProduct.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
-        plusProduct.addTarget(self, action: #selector(tappedAdd), for: .touchUpInside)
+    
+    private func setupUI() {
+        view.backgroundColor = .white
+        navigationItem.title = viewModel.title 
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    private func configure() {
+    private func setupHierarchy() {
         view.addSubview(tableView)
         view.addSubview(plusProduct)
-        
+    
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview()
+            make.width.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         plusProduct.snp.makeConstraints { make in
             make.right.equalTo(view.layoutMarginsGuide.snp.right)
@@ -55,43 +65,74 @@ class HomeVC : UIViewController {
 
 extension HomeVC : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.superTitleCells.count
+        return 1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomePageCell", for: indexPath) as? HomePageCell
+        let imageName = viewModel.imageName(indexPath.section)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HomePageCell.identifier, for: indexPath) as? HomePageCell
         else { return UITableViewCell()}
-        switch viewModel.superTitleCells[indexPath.row] {
-        case .imageAndText(let titleViewModel):
-            cell.selectionStyle = .none
-            cell.viewModel = titleViewModel.titleModel
-            cell.productImageView.image = UIImage(named: titleViewModel.imageName)
-        }
+        cell.productImageView.image = UIImage(named: imageName)
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return screenHeight * 0.2
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let tableViewCell = cell as? HomePageCell else { return }
+        tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        switch viewModel.superTitleCells[indexPath.row] {
-        case .imageAndText(let titleViewModel):
-            titleViewModel.titleModel.forEach {
-                print($0.title)
+        if let delegate = self.delegate {
+            tableView.cellForRow(at: indexPath)?.bounce()
+            if let delegate = self.delegate {
+                viewModel.selectedIndex = indexPath.section
+                delegate.arrengedItem(vm: viewModel.modalAt(indexPath.section))
             }
         }
-        viewModel.selectedItem(indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete {
-            viewModel.removeItem(indexPath: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            viewModel.removeItem(indexPath: indexPath.section)
         }
     }
+}
+
+extension HomeVC : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        let model = viewModel.featuresVM[collectionView.tag].featuresModel.titleModel
+//        return model.count
+        return self.viewModel.featuresVM[collectionView.tag].titleModel.count
+    }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseCollectionViews.identifier, for: indexPath) as? BaseCollectionViews else {
+            return UICollectionViewCell()
+        }
+        //let model = viewModel.featuresVM[collectionView.tag].featuresModel.titleModel
+        //let model = viewModel.featuresVM[collectionView.tag].titleModel
+        let model = viewModel.modelAt(collectionView.tag, indexPath.row)
+//        cell.titleLabel.text = model[indexPath.row].title
+//        cell.overViewLabel.text = model[indexPath.row].overview
+//        cell.titleLabel.text = model.title
+//        cell.overViewLabel.text = model.overview
+        cell.update(vm: model)
+        return cell
+        
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width / 2 , height: collectionView.bounds.height)
+    }
+}
+
+extension HomeVC : FinishAddProductDidSave {
+    func didSaveProduct(vm: FeaturesModel) {
+        viewModel.didSaveProduct(vm: vm)
+    }
 }
 

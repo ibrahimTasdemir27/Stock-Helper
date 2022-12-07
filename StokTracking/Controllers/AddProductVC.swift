@@ -7,28 +7,64 @@
 
 import UIKit
 import SnapKit
+import SwiftQRScanner
+
+protocol FinishAddProductDidSave {
+    func didSaveProduct(vm: FeaturesModel)
+}
 
 class AddProductVC : UIViewController {
     
     var viewModel : AddProductViewModel!
-    private let contentViewProduct = UIView()
-    private let contentViewQRCode = UIView()
-    private let productImage = UIImageView()
-    private let QRCodeImageView = UIImageView()
-    private let addCell = UIButton()
-    
-    let collectionView : UICollectionView = {
+    var delegate : FinishAddProductDidSave?
+    lazy var contentViewProduct : UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 60
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.gray.cgColor
+        view.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        return view
+    }()
+    lazy var contentViewQRCode: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 60
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.gray.cgColor
+        view.backgroundColor = .lightGray.withAlphaComponent(0.17)
+        return view
+    }()
+    lazy var productImage : UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "product")
+        return imageView
+    }()
+    lazy var QRCodeImageView : UIImageView = {
+        let imageView = UIImageView()
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedQR))
+        imageView.addGestureRecognizer(gestureRecognizer)
+        imageView.isUserInteractionEnabled = true
+        imageView.image = UIImage(named: "qrscan")
+        return imageView
+    }()
+    lazy var addCell: UIButton = {
+        let button = UIButton()
+        button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
+        button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
+        return button
+    }()
+    lazy var collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 0
         collection.backgroundColor = .clear
+        collection.delegate = self
+        collection.dataSource = self
         collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.register(AddProductCollectionViews.self, forCellWithReuseIdentifier: AddProductCollectionViews.identifier)
         return collection
     }()
-    
-    let pickerView = UIPickerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,8 +72,8 @@ class AddProductVC : UIViewController {
         viewModel.onUpdate = {
             self.collectionView.reloadData()
         }
-        setupViews()
-        configure()
+        setupUI()
+        setupHierarchy()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -45,41 +81,37 @@ class AddProductVC : UIViewController {
         viewModel.viewDidDisappear()
     }
     
-    private func setupViews() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        collectionView.register(AddProductCollectionViews.self, forCellWithReuseIdentifier: AddProductCollectionViews.identifier)
-        
+    @objc private func tappedQR() {
+        viewModel.requestAuthorization { permission in
+            if permission {
+                self.viewModel.prepareScanner(self)
+            }
+        }
+    }
+    
+    @objc private func tappedAddCell() {
+        viewModel.tappedAddCell()
+    }
+    
+    @objc private func tappedDone() {
+        viewModel.tappedDone(image: "clothes1"){ features in
+            if let delegate = self.delegate {
+                let featuresModel = FeaturesModel(imageName: "clothes1", titleModel: features)
+                delegate.didSaveProduct(vm: featuresModel)
+            }
+        }
+    }
+    
+    private func setupUI() {
         view.backgroundColor = .white
         
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showPickerview))
-        productImage.addGestureRecognizer(gestureRecognizer)
-        productImage.isUserInteractionEnabled = true
-        productImage.image = UIImage(named: "product")
-        QRCodeImageView.image = UIImage(named: "qrcode")
-        
-        contentViewProduct.layer.cornerRadius = 60
-        contentViewProduct.layer.borderWidth = 1
-        contentViewProduct.layer.borderColor = UIColor.gray.cgColor
-        contentViewProduct.backgroundColor = .lightGray.withAlphaComponent(0.2)
-        
-        contentViewQRCode.layer.cornerRadius = 60
-        contentViewQRCode.layer.borderWidth = 1
-        contentViewQRCode.layer.borderColor = UIColor.gray.cgColor
-        contentViewQRCode.backgroundColor = .lightGray.withAlphaComponent(0.2)
-        
-        addCell.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
-        addCell.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
-        navigationItem.title = "Add Product"
+        navigationItem.title = viewModel.title
         navigationController?.navigationBar.prefersLargeTitles = true
         
     }
     
-    private func configure() {
+    private func setupHierarchy() {
         view.addSubview(collectionView)
         view.addSubview(contentViewProduct)
         view.addSubview(contentViewQRCode)
@@ -89,7 +121,7 @@ class AddProductVC : UIViewController {
         let navBarHeight = UIApplication.shared.statusBarHeight + (navigationController?.navigationBar.frame.height ?? 0.0)
         
         contentViewProduct.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(navBarHeight + 10)
+            make.top.equalToSuperview().offset(navBarHeight + 20)
             make.left.equalToSuperview().offset(screenWidth * 0.05)
             make.width.equalTo(screenWidth * 0.4)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -100,7 +132,7 @@ class AddProductVC : UIViewController {
             make.width.equalToSuperview().multipliedBy(0.9)
         }
         contentViewQRCode.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(navBarHeight + 10)
+            make.top.equalToSuperview().offset(navBarHeight + 20)
             make.right.equalToSuperview().offset(-screenWidth * 0.05)
             make.width.equalTo(screenWidth * 0.4)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -122,84 +154,31 @@ class AddProductVC : UIViewController {
             make.height.width.equalTo(60)
         }
     }
-    
-    @objc private func tappedAddCell() {
-        viewModel.tappedAddCell()
-    }
-    
-    @objc private func tappedDone() {
-        viewModel.tappedDone(image: "medicine1")
-    }
-    
-    @objc func showPickerview() {
-        let vc = UIViewController()
-        vc.preferredContentSize = CGSize(width: 250,height: 300)
-        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: 250, height: 300))
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        vc.view.addSubview(pickerView)
-        let editRadiusAlert = UIAlertController(title: "Choose distance", message: "", preferredStyle: UIAlertController.Style.alert)
-        editRadiusAlert.setValue(vc, forKey: "contentViewController")
-        editRadiusAlert.addAction(UIAlertAction(title: "Done", style: .default, handler: nil))
-        editRadiusAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(editRadiusAlert, animated: true)
-    }
 }
 
 extension AddProductVC : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch viewModel.addingcell[0] {
-        case .title(let titleModel):
-            return titleModel.count
-        }
+        return viewModel.features.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddProductCollectionViews.identifier, for: indexPath) as? AddProductCollectionViews else {
             return UICollectionViewCell()
         }
-        switch viewModel.addingcell[0] {
-        case .title(let titleModel):
-            cell.update(with: titleModel[indexPath.row])
-            cell.titleTextField.delegate = self
-            cell.overviewTextView.delegate = self
-            if indexPath.row >= 0 {
-                cell.titleTextField.isUserInteractionEnabled = true
-            }
-        }
+        let features = viewModel.features[indexPath.row]
+        cell.update(with: features)
+        cell.titleTextField.delegate = self
+        cell.overviewTextView.delegate = self
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width / 2   , height: UIScreen.main.bounds.height / 4)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-}
-
-extension AddProductVC : UIPickerViewDelegate , UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return imageList.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 60
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return imageAbout[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
-    }
-    
 }
 
 extension AddProductVC : UITextFieldDelegate {
@@ -224,4 +203,20 @@ extension AddProductVC : UITextViewDelegate {
         }
         return true
     }
+}
+
+extension AddProductVC : QRScannerCodeDelegate {
+    func qrScanner(_ controller: UIViewController, scanDidComplete result: String) {
+        print("Result",result)
+    }
+    
+    func qrScannerDidFail(_ controller: UIViewController, error: SwiftQRScanner.QRCodeError) {
+        print("Error",error)
+    }
+    
+    func qrScannerDidCancel(_ controller: UIViewController) {
+        print("controller",controller)
+    }
+    
+    
 }

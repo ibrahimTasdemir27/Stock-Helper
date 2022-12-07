@@ -30,10 +30,4 @@ final class AppCoordinator : Coordinator {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
-    
-    func viewWillAppear() {
-        print("Yüklennn")
-    }
-    
-    
 }

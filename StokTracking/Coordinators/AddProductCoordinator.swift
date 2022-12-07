@@ -13,17 +13,20 @@ final class AddProductCoordinator : Coordinator {
     
     var parentCoordinator : HomeCoordinator?
     
+    private var homeVC: HomeVC?
     private var navigationController : UINavigationController
     private var modalNavigationController : UINavigationController?
     
-    init(navigationController : UINavigationController) {
+    init(_ navigationController : UINavigationController, _ homeVC: HomeVC) {
         self.navigationController = navigationController
+        self.homeVC = homeVC
     }
     
     func start() {
         let addProductVC = AddProductVC()
         let addProductViewModel = AddProductViewModel()
         self.modalNavigationController = UINavigationController()
+        addProductVC.delegate = homeVC
         addProductViewModel.coordinator = self
         addProductVC.viewModel = addProductViewModel
         modalNavigationController?.setViewControllers([addProductVC], animated: true)
@@ -37,9 +40,6 @@ final class AddProductCoordinator : Coordinator {
     }
     
     func didFinishSaveProduct() {
-        parentCoordinator?.onSaveProduct()
-        navigationController.dismiss(animated: true)
+        parentCoordinator?.didFinishSaveProduct()
     }
-    
-    
 }

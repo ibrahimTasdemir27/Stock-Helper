@@ -9,5 +9,3 @@ import UIKit
 
 let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
-let imageList = ["medicine1","medicine2","clothes1","clothes2"]
-let imageAbout = ["İlaç","Medikal","Mağaza","Giyim"]

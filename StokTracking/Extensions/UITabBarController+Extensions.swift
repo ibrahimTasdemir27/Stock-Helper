@@ -23,7 +23,5 @@ extension UITabBarController {
             items[i].image = UIImage(systemName: images[i])
             vc[i].title = title[i]
         }
-        
     }
-    
 }
