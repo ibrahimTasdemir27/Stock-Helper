@@ -54,13 +54,15 @@ class AddProductCollectionViews : UICollectionViewCell {
     private func setupViews() {
         titleTextField.textAlignment = .left
         titleTextField.isUserInteractionEnabled = false
-        titleTextField.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        titleTextField.backgroundColor = .white
+        titleTextField.textColor = .black
         titleTextField.layer.masksToBounds = true
         titleTextField.layer.cornerRadius = 20
         titleTextField.staticPadding(leftPadding: 15,rightPadding: 15)
         
         
-        overviewTextView.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        overviewTextView.backgroundColor = .white
+        overviewTextView.textColor = .black
         overviewTextView.layer.masksToBounds = true
         overviewTextView.layer.cornerRadius = 30
         overviewTextView.font = UIFont.systemFont(ofSize: 17)

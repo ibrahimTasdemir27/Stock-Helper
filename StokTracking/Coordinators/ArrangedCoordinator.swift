@@ -34,5 +34,7 @@ class ArrangedCoordinator: Coordinator {
         }
     }
     
-    
+    deinit {
+        print("deinitialized Ar")
+    }
 }

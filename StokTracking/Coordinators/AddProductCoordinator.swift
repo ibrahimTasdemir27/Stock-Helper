@@ -13,13 +13,12 @@ final class AddProductCoordinator : Coordinator {
     
     var parentCoordinator : HomeCoordinator?
     
-    private var homeVC: HomeVC?
+    var homeVC: HomeVC?
     private var navigationController : UINavigationController
     private var modalNavigationController : UINavigationController?
     
-    init(_ navigationController : UINavigationController, _ homeVC: HomeVC) {
+    init(_ navigationController : UINavigationController) {
         self.navigationController = navigationController
-        self.homeVC = homeVC
     }
     
     func start() {
@@ -36,10 +35,18 @@ final class AddProductCoordinator : Coordinator {
     }
     
     func didFinish() {
-        parentCoordinator?.childDidFinish(self)
+        parentCoordinator?.childDidFinish(self) { bool in
+            if bool {
+                
+            }
+        }
     }
     
     func didFinishSaveProduct() {
         parentCoordinator?.didFinishSaveProduct()
+    }
+    
+    deinit {
+        print("deinitialized")
     }
 }

@@ -99,9 +99,4 @@ struct FeaturesViewModel {
     var imageName: String {
         return featuresModel.imageName
     }
-    
-//    var titleModel: [Features] {
-//        return featuresModel.titleModel
-//    }
-    
 }

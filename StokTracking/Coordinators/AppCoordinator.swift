@@ -20,14 +20,36 @@ final class AppCoordinator : Coordinator {
     init(window: UIWindow) {
         self.window = window
     }
-    
-    func start() {
-        let tabBarController = UITabBarController()
+    let tabBarController = UITabBarController()
+    lazy var navigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: tabBarController)
+        return navigationController
+    }()
+    lazy var homeCoordinator: HomeCoordinator = {
         let homeCoordinator = HomeCoordinator(tabBarController: tabBarController , navigationController: navigationController)
         homeCoordinator.start()
+        return homeCoordinator
+    }()
+    
+    func start() {
+        // -> Kullanıcı ilk defa uygulamayı indiriyorsa
         childCoordinators.append(homeCoordinator)
+        if  userDefaults.bool(forKey: "firstdownload") == false {
+            let modalNavigation = UINavigationController()
+            let presentationController = PresentationViewController()
+            presentationController.coordinator = self
+            modalNavigation.setViewControllers([presentationController], animated: false)
+            window.rootViewController = modalNavigation
+        } else {
+            window.rootViewController = navigationController
+        }
+        window.makeKeyAndVisible()
+    }
+    
+    func tappedStart() {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
+    
+    
 }

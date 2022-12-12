@@ -22,7 +22,7 @@ class AddProductVC : UIViewController {
         view.layer.cornerRadius = 60
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
-        view.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        view.backgroundColor = .white
         return view
     }()
     lazy var contentViewQRCode: UIView = {
@@ -30,7 +30,7 @@ class AddProductVC : UIViewController {
         view.layer.cornerRadius = 60
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
-        view.backgroundColor = .lightGray.withAlphaComponent(0.17)
+        view.backgroundColor = .white
         return view
     }()
     lazy var productImage : UIImageView = {
@@ -48,6 +48,7 @@ class AddProductVC : UIViewController {
     }()
     lazy var addCell: UIButton = {
         let button = UIButton()
+        button.tintColor = .secondaryColor
         button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
         return button
@@ -56,15 +57,17 @@ class AddProductVC : UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 0
-        collection.backgroundColor = .clear
+        layout.minimumInteritemSpacing = .zero
+        collection.backgroundColor = .systemGray6
         collection.delegate = self
         collection.dataSource = self
-        collection.showsVerticalScrollIndicator = false
-        collection.translatesAutoresizingMaskIntoConstraints = false
         collection.register(AddProductCollectionViews.self, forCellWithReuseIdentifier: AddProductCollectionViews.identifier)
         return collection
     }()
+    
+    deinit {
+        print("AddproductVC: I'm deinit")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,7 +106,7 @@ class AddProductVC : UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemGray6
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
         navigationItem.title = viewModel.title
@@ -217,6 +220,4 @@ extension AddProductVC : QRScannerCodeDelegate {
     func qrScannerDidCancel(_ controller: UIViewController) {
         print("controller",controller)
     }
-    
-    
 }

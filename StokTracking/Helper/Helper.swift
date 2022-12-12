@@ -16,3 +16,5 @@ enum Icons {
         }
     }
 }
+
+let userDefaults = UserDefaults.standard

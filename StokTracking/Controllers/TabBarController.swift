@@ -20,8 +20,10 @@ final class TabBarController {
     func setupTabbar(vc : [UIViewController]) {
         navigationController.isNavigationBarHidden = true
         tabbarController.instantiate(vc: vc)
-        tabbarController.tabBar.backgroundColor = .white
-        tabbarController.tabBar.tintColor = .tabBarColor
+        tabbarController.tabBar.backgroundColor = .systemGray6
+        tabbarController.tabBar.barTintColor = .systemGray6
+        tabbarController.tabBar.tintColor = .secondaryColor
+        
     }
 }
 

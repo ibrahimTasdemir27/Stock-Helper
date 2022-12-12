@@ -14,11 +14,10 @@ class HomePageCell : UITableViewCell {
         return String(describing: self)
     }
     
-    private let titleView = UIView()
     let productImageView = UIImageView()
     lazy var productView : UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        view.backgroundColor = .white
         view.layer.cornerRadius = 40
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
@@ -42,9 +41,6 @@ class HomePageCell : UITableViewCell {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
-        collection.backgroundColor = .clear
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.showsHorizontalScrollIndicator = false
         collection.register(BaseCollectionViews.self, forCellWithReuseIdentifier: BaseCollectionViews.identifier)
         return collection
     }()
@@ -62,15 +58,15 @@ class HomePageCell : UITableViewCell {
     
     private func setupUI() {
         selectionStyle = .none
+        backgroundColor = .systemGray6
     }
 
     private func setupHierarchy() {
-        contentView.addSubview(titleView)
         contentView.addSubview(productView)
         productView.addSubview(productImageView)
         productView.addSubview(changeImage)
         productView.addSubview(QRButton)
-        titleView.addSubview(mainCollectionView)
+        contentView.addSubview(mainCollectionView)
         
         productView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(10)
@@ -95,14 +91,11 @@ class HomePageCell : UITableViewCell {
             make.width.equalToSuperview().multipliedBy(0.16)
             make.height.equalTo(QRButton.snp.width)
         }
-        titleView.snp.makeConstraints { make in
+        mainCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(5)
             make.left.equalTo(productView.snp.right).offset(10)
             make.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-5)
-        }
-        mainCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
         }
     }
     

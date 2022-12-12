@@ -17,22 +17,25 @@ class ArrangedProductVC: UIViewController {
         view.layer.cornerRadius = 45
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
-        view.backgroundColor = .lightGray.withAlphaComponent(0.2)
+        view.backgroundColor = .white
         return view
     }()
+    
     lazy var contentViewQRCode: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 45
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
-        view.backgroundColor = .lightGray.withAlphaComponent(0.17)
+        view.backgroundColor = .white
         return view
     }()
+    
     lazy var productImage : UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: arrangedVM.imageName)
         return imageView
     }()
+    
     lazy var QRCodeImageView : UIImageView = {
         let imageView = UIImageView()
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedQR))
@@ -41,12 +44,15 @@ class ArrangedProductVC: UIViewController {
         imageView.image = UIImage(named: "qrscan")
         return imageView
     }()
+    
     lazy var addCell: UIButton = {
         let button = UIButton()
+        button.tintColor = .secondaryColor
         button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
         return button
     }()
+    
     lazy var collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -86,7 +92,7 @@ class ArrangedProductVC: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemGray6
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
         navigationItem.title = arrangedVM.title
         navigationController?.navigationBar.prefersLargeTitles = true

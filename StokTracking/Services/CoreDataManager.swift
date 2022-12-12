@@ -8,6 +8,12 @@
 import CoreData
 import UIKit
 
+enum FieldKeyCoredata: String {
+    case stocks = "Stocks"
+    case image = "image"
+    case texts = "texts"
+    case dict = "dict"
+}
 
 final class CoreDataManager {
     static let shared = CoreDataManager()
@@ -29,8 +35,8 @@ final class CoreDataManager {
         do {
             let encodedDictionary = try JSONEncoder().encode(dictionary)
             let stocks = Stocks(context: moc)
-            stocks.setValue(vm.imageName, forKey: "image")
-            stocks.setValue(encodedDictionary, forKey: "texts")
+            stocks.setValue(vm.imageName, forKey: FieldKeyCoredata.image.rawValue)
+            stocks.setValue(encodedDictionary, forKey: FieldKeyCoredata.texts.rawValue)
             try moc.save()
         } catch {
             print("error: ", error)
@@ -39,7 +45,7 @@ final class CoreDataManager {
     
     func fetch() -> [Stocks] {
         do {
-            let fetchRequest = NSFetchRequest<Stocks>(entityName: "Stocks")
+            let fetchRequest = NSFetchRequest<Stocks>(entityName: FieldKeyCoredata.stocks.rawValue)
             let stocks = try moc.fetch(fetchRequest)
             return stocks
         } catch {
@@ -49,13 +55,13 @@ final class CoreDataManager {
     }
     
     func update(_ index: Int, _ vm: FeaturesModel) {
-        let dictionary : [String : [Features]] = ["dict":vm.titleModel]
+        let dictionary = ["dict":vm.titleModel]
         do {
             let encodedDictionary = try JSONEncoder().encode(dictionary)
-            let fetchRequest = NSFetchRequest<Stocks>(entityName: "Stocks")
+            let fetchRequest = NSFetchRequest<Stocks>(entityName: FieldKeyCoredata.stocks.rawValue)
             let stocks = try moc.fetch(fetchRequest)
-            stocks[index].setValue(vm.imageName, forKey: "image")
-            stocks[index].setValue(encodedDictionary, forKey: "texts")
+            stocks[index].setValue(vm.imageName, forKey: FieldKeyCoredata.image.rawValue)
+            stocks[index].setValue(encodedDictionary, forKey: FieldKeyCoredata.texts.rawValue)
             try moc.save()
         } catch {
             print(error)
@@ -64,7 +70,7 @@ final class CoreDataManager {
     
     func deleteAll() {
         do {
-            let fetchRequest = NSFetchRequest<Stocks>(entityName: "Stocks")
+            let fetchRequest = NSFetchRequest<Stocks>(entityName: FieldKeyCoredata.stocks.rawValue)
             let stocks = try moc.fetch(fetchRequest)
             try stocks.forEach {
                 moc.delete($0)
@@ -78,7 +84,7 @@ final class CoreDataManager {
     
     func delete(indexPath : Int) {
         do {
-            let fetchRequest = NSFetchRequest<Stocks>(entityName: "Stocks")
+            let fetchRequest = NSFetchRequest<Stocks>(entityName: FieldKeyCoredata.stocks.rawValue)
             let stocks = try moc.fetch(fetchRequest)
             moc.delete(stocks[indexPath])
             try moc.save()

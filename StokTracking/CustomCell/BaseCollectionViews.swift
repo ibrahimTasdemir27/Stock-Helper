@@ -11,6 +11,7 @@ import SnapKit
 class BaseCollectionViews : UICollectionViewCell {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.backgroundColor = .systemGray6
         label.textAlignment = .center
         label.layer.borderWidth = 0.4
         label.layer.masksToBounds = true
@@ -20,6 +21,7 @@ class BaseCollectionViews : UICollectionViewCell {
     }()
     lazy var overViewLabel: UILabel = {
         let label = UILabel()
+        label.backgroundColor = .systemGray6
         label.textAlignment = .right
         label.numberOfLines = 20
         label.layer.masksToBounds = true

@@ -5,7 +5,7 @@
 //  Created by İbrahim Taşdemir on 7.11.2022.
 //
 
-import UIKit
+import UIKit.UITabBarController
 
 extension UITabBarController {
     func instantiate(vc : [UIViewController]) {

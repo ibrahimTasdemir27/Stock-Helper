@@ -8,16 +8,15 @@ class HomeVC : UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .none
         tableView.rowHeight = screenHeight * 0.2 + 10
-        tableView.register(HomePageCell.self, forCellReuseIdentifier: HomePageCell.identifier)
+        tableView.register(HomePageCell.self)
         return tableView
     }()
     lazy var plusProduct: UIButton = {
         let button = UIButton()
         button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAdd), for: .touchUpInside)
-        button.tintColor = .tabBarColor
+        button.tintColor = .secondaryColor
         return button
     }()
     
@@ -37,7 +36,7 @@ class HomeVC : UIViewController {
     
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemGray6
         navigationItem.title = viewModel.title 
         navigationController?.navigationBar.prefersLargeTitles = true
     }
@@ -88,10 +87,8 @@ extension HomeVC : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let delegate = self.delegate {
             tableView.cellForRow(at: indexPath)?.bounce()
-            if let delegate = self.delegate {
-                viewModel.selectedIndex = indexPath.section
-                delegate.arrengedItem(vm: viewModel.modalAt(indexPath.section))
-            }
+            viewModel.selectedIndex = indexPath.section
+            delegate.arrengedItem(vm: viewModel.modalAt(indexPath.section))
         }
     }
     
@@ -104,8 +101,6 @@ extension HomeVC : UITableViewDataSource , UITableViewDelegate {
 
 extension HomeVC : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        let model = viewModel.featuresVM[collectionView.tag].featuresModel.titleModel
-//        return model.count
         return self.viewModel.featuresVM[collectionView.tag].titleModel.count
     }
     
@@ -113,13 +108,7 @@ extension HomeVC : UICollectionViewDelegate, UICollectionViewDataSource, UIColle
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BaseCollectionViews.identifier, for: indexPath) as? BaseCollectionViews else {
             return UICollectionViewCell()
         }
-        //let model = viewModel.featuresVM[collectionView.tag].featuresModel.titleModel
-        //let model = viewModel.featuresVM[collectionView.tag].titleModel
         let model = viewModel.modelAt(collectionView.tag, indexPath.row)
-//        cell.titleLabel.text = model[indexPath.row].title
-//        cell.overViewLabel.text = model[indexPath.row].overview
-//        cell.titleLabel.text = model.title
-//        cell.overViewLabel.text = model.overview
         cell.update(vm: model)
         return cell
         

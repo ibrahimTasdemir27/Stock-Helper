@@ -55,17 +55,19 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
     }
     
     func startAddProduct() {
-        let addProductCoordinator = AddProductCoordinator(navigationController,homeVC)
+        let addProductCoordinator = AddProductCoordinator(navigationController)
+        addProductCoordinator.homeVC = homeVC
         addProductCoordinator.parentCoordinator = self
         addProductCoordinator.start()
         childCoordinators.append(addProductCoordinator)
     }
     
-    func childDidFinish(_ childCoordinator : Coordinator) {
+    func childDidFinish(_ childCoordinator : Coordinator , completion: @escaping(Bool) -> Void) {
         if let index = childCoordinators.firstIndex(where: { coordinator -> Bool in
             return childCoordinator === coordinator
         }){
             childCoordinators.remove(at: index)
+            completion(true)
         }
     }
     
