@@ -48,7 +48,7 @@ class ArrangedProductVC: UIViewController {
     lazy var addCell: UIButton = {
         let button = UIButton()
         button.tintColor = .secondaryColor
-        button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
+        button.setImage(Icons.plus.image.withConfiguration(Icons.plus.image.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
         return button
     }()
@@ -67,16 +67,33 @@ class ArrangedProductVC: UIViewController {
         return collection
     }()
     
+    deinit {
+        print("I'm deinit: ArrangedProductVC")
+    }
+    
     var arrangedVM: ArrangedViewModel!
     var delegate: ArrangeProductDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        arrangedVM.onUpdate = {
-            self.collectionView.reloadData()
-        }
+        arrangedVM.viewDidLoad()
+        initViewModel()
         setupUI()
         setupHierarchy()
+    }
+    
+    private func initViewModel() {
+        arrangedVM.onUpdate = { [weak self] in
+            self?.collectionView.reloadData()
+        }
+        arrangedVM.showError = { [weak self] error in
+            prepareError(vc: self!, error: error)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        arrangedVM.viewDidDisappear()
     }
     
     @objc private func tappedQR() {
@@ -100,8 +117,10 @@ class ArrangedProductVC: UIViewController {
     }
     
     @objc private func tappedDone() {
-        if let delegate = self.delegate {
-            delegate.didFinishArrengeItem(vm: arrangedVM.updatedModel())
+        if let delegate = self.delegate, let navigationController = self.navigationController {
+            if arrangedVM.tappedDone() {
+                delegate.didFinishArrengeItem(vm: arrangedVM.updatedModel(), nav: navigationController)
+            }
         }
     }
     
@@ -145,7 +164,7 @@ class ArrangedProductVC: UIViewController {
         addCell.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-screenHeight * 0.1)
             make.right.equalTo(view.layoutMarginsGuide.snp.right)
-            make.height.width.equalTo(60)
+            make.height.width.equalTo(50)
         }
     }
     
@@ -161,16 +180,17 @@ extension ArrangedProductVC : UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let features = arrangedVM.modalAt(indexPath.row)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddProductCollectionViews.identifier, for: indexPath) as? AddProductCollectionViews else {
             return UICollectionViewCell()
         }
-        let features = arrangedVM.modalAt(indexPath.row)
-        cell.titleTextField.isUserInteractionEnabled = true
-        cell.titleTextField.delegate = self
-        cell.overviewTextView.delegate = self
-        cell.titleTextField.text = features.title
-        cell.overviewTextView.text = features.overview
+        cell.getDelegate(delegate: self)
+        cell.update(with: features,at: indexPath.row)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -204,6 +224,14 @@ extension ArrangedProductVC: UITextViewDelegate {
             }
         }
         return true
+    }
+}
+
+extension ArrangedProductVC: DidDeleteDelegate {
+    func delete(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else {
+            return }
+        arrangedVM.tappedDelete(indexPath.row)
     }
 }
 

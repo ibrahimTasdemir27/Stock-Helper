@@ -9,13 +9,10 @@ import UIKit
 import SnapKit
 import SwiftQRScanner
 
-protocol FinishAddProductDidSave {
-    func didSaveProduct(vm: FeaturesModel)
-}
 
 class AddProductVC : UIViewController {
     
-    var viewModel : AddProductViewModel!
+    var addProductVM : AddProductViewModel!
     var delegate : FinishAddProductDidSave?
     lazy var contentViewProduct : UIView = {
         let view = UIView()
@@ -49,7 +46,7 @@ class AddProductVC : UIViewController {
     lazy var addCell: UIButton = {
         let button = UIButton()
         button.tintColor = .secondaryColor
-        button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
+        button.setImage(Icons.plus.image.withConfiguration(Icons.plus.image.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
         return button
     }()
@@ -71,36 +68,44 @@ class AddProductVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.viewDidLoad()
-        viewModel.onUpdate = {
-            self.collectionView.reloadData()
-        }
+        addProductVM.viewDidLoad()
+        initViewModel()
         setupUI()
         setupHierarchy()
     }
     
+    private func initViewModel() {
+        addProductVM.onUpdate = { [weak self] in
+            self?.collectionView.reloadData()
+        }
+        addProductVM.showError = { [weak self] error in
+            prepareError(vc: self!, error: error)
+        }
+    }
+    
+    
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewModel.viewDidDisappear()
+        addProductVM.viewDidDisappear()
     }
     
     @objc private func tappedQR() {
-        viewModel.requestAuthorization { permission in
+        addProductVM.requestAuthorization { permission in
             if permission {
-                self.viewModel.prepareScanner(self)
+                self.addProductVM.prepareScanner(self)
             }
         }
     }
     
     @objc private func tappedAddCell() {
-        viewModel.tappedAddCell()
+        addProductVM.tappedAddCell()
     }
     
     @objc private func tappedDone() {
-        viewModel.tappedDone(image: "clothes1"){ features in
-            if let delegate = self.delegate {
-                let featuresModel = FeaturesModel(imageName: "clothes1", titleModel: features)
-                delegate.didSaveProduct(vm: featuresModel)
+        if let delegate = self.delegate {
+            if addProductVM.tappedDone() {
+                delegate.didSaveProduct(vm: addProductVM.updateModal())
             }
         }
     }
@@ -109,7 +114,7 @@ class AddProductVC : UIViewController {
         view.backgroundColor = .systemGray6
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
-        navigationItem.title = viewModel.title
+        navigationItem.title = addProductVM.title
         navigationController?.navigationBar.prefersLargeTitles = true
         
     }
@@ -157,7 +162,10 @@ class AddProductVC : UIViewController {
             make.height.width.equalTo(60)
         }
     }
+    
 }
+
+
 
 extension AddProductVC : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -165,17 +173,16 @@ extension AddProductVC : UICollectionViewDelegate , UICollectionViewDataSource ,
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.features.count
+        return addProductVM.features.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let features = addProductVM.features[indexPath.row]
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddProductCollectionViews.identifier, for: indexPath) as? AddProductCollectionViews else {
             return UICollectionViewCell()
         }
-        let features = viewModel.features[indexPath.row]
-        cell.update(with: features)
-        cell.titleTextField.delegate = self
-        cell.overviewTextView.delegate = self
+        cell.update(with: features, at: indexPath.row)
+        cell.getDelegate(delegate: self)
         return cell
     }
     
@@ -190,7 +197,7 @@ extension AddProductVC : UITextFieldDelegate {
         let text = currentText + string
         let point = textField.convert(textField.bounds.origin, to: collectionView)
         if let indexPath = collectionView.indexPathForItem(at: point) {
-            viewModel.cellUpdateTextField(indexPath , text)
+            addProductVM.cellUpdateTextField(indexPath , text)
         }
         return true
     }
@@ -202,9 +209,16 @@ extension AddProductVC : UITextViewDelegate {
         let text = currentText + text
         let point = textView.convert(textView.bounds.origin, to: collectionView)
         if let indexPath = collectionView.indexPathForItem(at: point) {
-            viewModel.cellUpdateTextView(indexPath,text)
+            addProductVM.cellUpdateTextView(indexPath,text)
         }
         return true
+    }
+}
+
+extension AddProductVC: DidDeleteDelegate {
+    func delete(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        addProductVM.tappedDelete(indexPath.row)
     }
 }
 

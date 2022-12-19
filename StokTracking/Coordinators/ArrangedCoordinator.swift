@@ -5,16 +5,16 @@
 //  Created by İbrahim Taşdemir on 2.12.2022.
 //
 
-import UIKit
+import UIKit.UINavigationController
 
-class ArrangedCoordinator: Coordinator {
+final class ArrangedCoordinator: Coordinator {
     
     private(set) var childCoordinators: [Coordinator] = []
     
     private let navigationController: UINavigationController
     private var modalNavigationController: UINavigationController?
     private let featuresModel: FeaturesModel
-    var delegate: ArrangeProductDelegate?
+    weak var parentCoordinator: HomeCoordinator?
     
     init(_ navigationController: UINavigationController, _ featuresModel: FeaturesModel) {
         self.navigationController = navigationController
@@ -22,11 +22,12 @@ class ArrangedCoordinator: Coordinator {
     }
     
     func start() {
+        self.modalNavigationController = UINavigationController()
         let arrangedProductVC = ArrangedProductVC()
         let arrangedVM = ArrangedViewModel(featuresModel)
+        arrangedVM.coordinator = self
         arrangedProductVC.arrangedVM = arrangedVM
-        arrangedProductVC.delegate = delegate
-        self.modalNavigationController = UINavigationController()
+        arrangedProductVC.delegate = parentCoordinator
         modalNavigationController?.modalTransitionStyle = .coverVertical
         modalNavigationController?.setViewControllers([arrangedProductVC], animated: true)
         if let modalNavigationController = modalNavigationController {
@@ -34,7 +35,12 @@ class ArrangedCoordinator: Coordinator {
         }
     }
     
-    deinit {
-        print("deinitialized Ar")
+    func didFinish() {
+        parentCoordinator?.childDidFinish(self)
     }
+    
+    deinit {
+        print("I'm deinit: ArrangedCoordinator")
+    }
+    
 }

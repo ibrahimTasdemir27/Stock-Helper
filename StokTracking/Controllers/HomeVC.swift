@@ -14,8 +14,25 @@ class HomeVC : UIViewController {
     }()
     lazy var plusProduct: UIButton = {
         let button = UIButton()
-        button.setImage(Icons.plus.imageName.withConfiguration(Icons.plus.imageName.config(40)), for: .normal)
+        DispatchQueue.main.async {
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = button.frame.size.width / 2
+        }
+        button.backgroundColor = .systemGray6
+        button.setImage(Icons.plus.image.withConfiguration(Icons.plus.image.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAdd), for: .touchUpInside)
+        button.tintColor = .secondaryColor
+        return button
+    }()
+    lazy var shoppingBasket: UIButton = {
+        let button = UIButton()
+        DispatchQueue.main.async {
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = button.frame.size.width / 2
+        }
+        button.backgroundColor = .systemGray6
+        button.setImage(Icons.shopping.image.withConfiguration(Icons.shopping.image.config(40)), for: .normal)
+        button.addTarget(self, action: #selector(tappedBasket), for: .touchUpInside)
         button.tintColor = .secondaryColor
         return button
     }()
@@ -27,11 +44,16 @@ class HomeVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad()
+        initViewModel()
         setupUI()
+        
+        setupHierarchy()
+    }
+    
+    func initViewModel() {
         viewModel.onUpdate = {
             self.tableView.reloadData()
         }
-        setupHierarchy()
     }
     
     
@@ -43,12 +65,18 @@ class HomeVC : UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(tableView)
+        view.addSubview(shoppingBasket)
         view.addSubview(plusProduct)
     
         tableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.width.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+        shoppingBasket.snp.makeConstraints { make in
+            make.top.equalTo(view.layoutMarginsGuide.snp.top).offset(20)
+            make.right.equalTo(view.layoutMarginsGuide.snp.right)
+            make.height.width.equalTo(60)
         }
         plusProduct.snp.makeConstraints { make in
             make.right.equalTo(view.layoutMarginsGuide.snp.right)
@@ -59,6 +87,10 @@ class HomeVC : UIViewController {
     
     @objc private func tappedAdd() {
         viewModel.tappedAdd()
+    }
+    
+    @objc private func tappedBasket() {
+        viewModel.tappedBasket()
     }
 }
 
@@ -116,12 +148,6 @@ extension HomeVC : UICollectionViewDelegate, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width / 2 , height: collectionView.bounds.height)
-    }
-}
-
-extension HomeVC : FinishAddProductDidSave {
-    func didSaveProduct(vm: FeaturesModel) {
-        viewModel.didSaveProduct(vm: vm)
     }
 }
 

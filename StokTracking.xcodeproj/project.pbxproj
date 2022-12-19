@@ -16,6 +16,12 @@
 		4F2C5936294610DD00CADA82 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C5935294610DD00CADA82 /* PresentationViewController.swift */; };
 		4F2C593929461A1700CADA82 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F2C593829461A1700CADA82 /* OpenSans-Bold.ttf */; };
 		4F2C593B29461A2000CADA82 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F2C593A29461A2000CADA82 /* OpenSans-ExtraBold.ttf */; };
+		4F2C599B294E293300CADA82 /* BasketCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C599A294E293300CADA82 /* BasketCoordinator.swift */; };
+		4F2C599E294E29D600CADA82 /* BasketVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C599D294E29D600CADA82 /* BasketVC.swift */; };
+		4F2C59A0294E5BC600CADA82 /* BasketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C599F294E5BC600CADA82 /* BasketViewModel.swift */; };
+		4F2C59A4294F4CCB00CADA82 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59A3294F4CCB00CADA82 /* String+Ext.swift */; };
+		4F2C59A6294FAC6E00CADA82 /* BasketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59A5294FAC6E00CADA82 /* BasketCell.swift */; };
+		4F2C59A8294FD94100CADA82 /* BasketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59A7294FD94100CADA82 /* BasketTableViewCell.swift */; };
 		4F3D4826293A6A3300F335FD /* ArrangedProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4825293A6A3300F335FD /* ArrangedProductVC.swift */; };
 		4F3D4828293A6A7000F335FD /* ArrangedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4827293A6A7000F335FD /* ArrangedCoordinator.swift */; };
 		4F3D482A293A6DF900F335FD /* ArrangedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4829293A6DF900F335FD /* ArrangedViewModel.swift */; };
@@ -61,6 +67,12 @@
 		4F2C5935294610DD00CADA82 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
 		4F2C593829461A1700CADA82 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../../../Open_Sans/static/OpenSans/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		4F2C593A29461A2000CADA82 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBold.ttf"; path = "../../../Open_Sans/static/OpenSans/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		4F2C599A294E293300CADA82 /* BasketCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketCoordinator.swift; sourceTree = "<group>"; };
+		4F2C599D294E29D600CADA82 /* BasketVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketVC.swift; sourceTree = "<group>"; };
+		4F2C599F294E5BC600CADA82 /* BasketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewModel.swift; sourceTree = "<group>"; };
+		4F2C59A3294F4CCB00CADA82 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		4F2C59A5294FAC6E00CADA82 /* BasketCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketCell.swift; sourceTree = "<group>"; };
+		4F2C59A7294FD94100CADA82 /* BasketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketTableViewCell.swift; sourceTree = "<group>"; };
 		4F3D4825293A6A3300F335FD /* ArrangedProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangedProductVC.swift; sourceTree = "<group>"; };
 		4F3D4827293A6A7000F335FD /* ArrangedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangedCoordinator.swift; sourceTree = "<group>"; };
 		4F3D4829293A6DF900F335FD /* ArrangedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangedViewModel.swift; sourceTree = "<group>"; };
@@ -127,6 +139,14 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		4F2C599C294E299D00CADA82 /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				4F2C5935294610DD00CADA82 /* PresentationViewController.swift */,
+			);
+			path = Intro;
+			sourceTree = "<group>";
+		};
 		4F3D4822293969B700F335FD /* CustomCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +154,8 @@
 				4F45E22E291AF522002A8294 /* AddProductCollectionViews.swift */,
 				4F45E1B1291852B8002A8294 /* HomePageCell.swift */,
 				4F2C592D2945008200CADA82 /* SettingsCell.swift */,
+				4F2C59A5294FAC6E00CADA82 /* BasketCell.swift */,
+				4F2C59A7294FD94100CADA82 /* BasketTableViewCell.swift */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -142,11 +164,12 @@
 			isa = PBXGroup;
 			children = (
 				4F45E1A6291841B6002A8294 /* TabBarController.swift */,
-				4F45E1A229183571002A8294 /* SettingsVC.swift */,
 				4F45E1A4291835BC002A8294 /* HomeVC.swift */,
 				4F45E226291ACEC7002A8294 /* AddProductVC.swift */,
 				4F3D4825293A6A3300F335FD /* ArrangedProductVC.swift */,
-				4F2C5935294610DD00CADA82 /* PresentationViewController.swift */,
+				4F2C599D294E29D600CADA82 /* BasketVC.swift */,
+				4F45E1A229183571002A8294 /* SettingsVC.swift */,
+				4F2C599C294E299D00CADA82 /* Intro */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -159,6 +182,7 @@
 				4F45E230291AFCA5002A8294 /* AddProductViewModel.swift */,
 				4F3D4829293A6DF900F335FD /* ArrangedViewModel.swift */,
 				4F2C592B2944FF5900CADA82 /* SettingsViewModel.swift */,
+				4F2C599F294E5BC600CADA82 /* BasketViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -210,6 +234,7 @@
 				4F45E1A0291833FD002A8294 /* HomeCoordinator.swift */,
 				4F45E224291AC7EC002A8294 /* AddProductCoordinator.swift */,
 				4F3D4827293A6A7000F335FD /* ArrangedCoordinator.swift */,
+				4F2C599A294E293300CADA82 /* BasketCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -227,6 +252,7 @@
 				4F2C592F294502A200CADA82 /* UITableView+Ext.swift */,
 				4F2C59312945054F00CADA82 /* UILabel+Ext.swift */,
 				4F2C59332945095800CADA82 /* UIViewController+Ext.swift */,
+				4F2C59A3294F4CCB00CADA82 /* String+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -377,21 +403,26 @@
 				4F45E1A5291835BC002A8294 /* HomeVC.swift in Sources */,
 				4F2C59322945054F00CADA82 /* UILabel+Ext.swift in Sources */,
 				4F2C59342945095800CADA82 /* UIViewController+Ext.swift in Sources */,
+				4F2C59A4294F4CCB00CADA82 /* String+Ext.swift in Sources */,
 				4F3D482A293A6DF900F335FD /* ArrangedViewModel.swift in Sources */,
 				4F45E225291AC7EC002A8294 /* AddProductCoordinator.swift in Sources */,
 				4F2C5936294610DD00CADA82 /* PresentationViewController.swift in Sources */,
 				4F45E22B291AEE05002A8294 /* UIImage+Extensions.swift in Sources */,
 				4F3D4826293A6A3300F335FD /* ArrangedProductVC.swift in Sources */,
+				4F2C59A8294FD94100CADA82 /* BasketTableViewCell.swift in Sources */,
+				4F2C599B294E293300CADA82 /* BasketCoordinator.swift in Sources */,
 				4F2C592C2944FF5900CADA82 /* SettingsViewModel.swift in Sources */,
 				4F45E192291831C9002A8294 /* StokTracking.xcdatamodeld in Sources */,
 				4FC79C942934F7EB00F1FCB1 /* UIColor+Extensions.swift in Sources */,
 				4F51FE38291D124400FE6B25 /* CoreDataManager.swift in Sources */,
 				4F45E1A7291841B6002A8294 /* TabBarController.swift in Sources */,
+				4F2C59A0294E5BC600CADA82 /* BasketViewModel.swift in Sources */,
 				4F45E1B629185BDA002A8294 /* FeaturesListViewModel.swift in Sources */,
 				4F45E22F291AF522002A8294 /* AddProductCollectionViews.swift in Sources */,
 				4FC79CE0293660CE00F1FCB1 /* UIView+Extensions.swift in Sources */,
 				4F2C5930294502A200CADA82 /* UITableView+Ext.swift in Sources */,
 				4F45E1F129190E2A002A8294 /* UITabBarController+Extensions.swift in Sources */,
+				4F2C599E294E29D600CADA82 /* BasketVC.swift in Sources */,
 				4F3D4828293A6A7000F335FD /* ArrangedCoordinator.swift in Sources */,
 				4F45E227291ACEC7002A8294 /* AddProductVC.swift in Sources */,
 				4F45E19F29183280002A8294 /* AppCoordinator.swift in Sources */,
@@ -407,6 +438,7 @@
 				4F45E231291AFCA5002A8294 /* AddProductViewModel.swift in Sources */,
 				4F45E1B2291852B8002A8294 /* HomePageCell.swift in Sources */,
 				4F45E1A329183571002A8294 /* SettingsVC.swift in Sources */,
+				4F2C59A6294FAC6E00CADA82 /* BasketCell.swift in Sources */,
 				4F45E1BC29186960002A8294 /* BaseCollectionViews.swift in Sources */,
 				4F45E1BE29186B1F002A8294 /* TitleViewModel.swift in Sources */,
 			);

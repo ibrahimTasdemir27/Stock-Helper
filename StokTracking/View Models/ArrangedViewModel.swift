@@ -10,12 +10,16 @@ import SwiftQRScanner
 import AVFoundation
 import CoreData
 
-class ArrangedViewModel {
+final class ArrangedViewModel {
     
     var title = "Arrange Item"
     
     private var featuresModel: FeaturesModel
     
+    weak var coordinator: ArrangedCoordinator?
+    var coreDataManager: CoreDataManager?
+    
+    var showError: ((ShowError) -> Void)?
     var onUpdate = {}
     
     var imageName: String {
@@ -24,6 +28,40 @@ class ArrangedViewModel {
     
     init(_ featuresModel: FeaturesModel) {
         self.featuresModel = featuresModel
+        self.coreDataManager = CoreDataManager.shared
+    }
+    
+    func viewDidLoad() {
+        userDefaults.setValue(featuresModel.titleModel.first?.overview, forKey: "title")
+    }
+    
+    func viewDidDisappear() {
+        coordinator?.didFinish()
+    }
+    
+    func isEmpty() -> Bool {
+        var result = true
+        featuresModel.titleModel.forEach { features in
+            guard features.overview.isNotEmpty() else {
+                result = false
+                return
+            }
+        }
+        return result
+    }
+    
+    func tappedDone() -> Bool {
+        if isEmpty() {
+            if !(coreDataManager?.isContains(text: featuresModel.titleModel.first!.overview))! {
+                return true
+            } else {
+                showError!(.alreadyName)
+                return false
+            }
+        } else {
+            showError!(.emptyProductName)
+            return false
+        }
     }
     
     func updatedModel() -> FeaturesModel {
@@ -40,6 +78,11 @@ class ArrangedViewModel {
     
     func tappedAddCell() {
         featuresModel.titleModel.append(Features(title: " ", overview: " "))
+        onUpdate()
+    }
+    
+    func tappedDelete(_ index: Int) {
+        featuresModel.titleModel.remove(at: index)
         onUpdate()
     }
     
@@ -80,5 +123,9 @@ class ArrangedViewModel {
         @unknown default:
             isPermission(false)
         }
+    }
+    
+    deinit {
+        print("I'm deinit: ArrangedViewModel")
     }
 }

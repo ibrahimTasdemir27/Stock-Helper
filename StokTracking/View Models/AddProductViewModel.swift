@@ -13,17 +13,19 @@ final class AddProductViewModel {
     
     var title = "Add Product"
     
-    var coordinator : AddProductCoordinator?
+    weak var coordinator : AddProductCoordinator?
     
     var features = [Features]()
     
+    var showError: ((ShowError) -> Void)?
+    var coreDataManager: CoreDataManager = .shared
     var onUpdate = {}
     
     func setupProductCell() {
         features = [
             Features(title: "Ürün Adı", overview: ""),
             Features(title: "Ürün Fiyatı", overview: ""),
-            Features(title: "S.K.T", overview: "")]
+            Features(title: "Ürün Adedi", overview: "")]
         onUpdate()
     }
     
@@ -40,9 +42,38 @@ final class AddProductViewModel {
         onUpdate()
     }
     
-    func tappedDone(image: String,completion: @escaping([Features]) -> Void) {
-        completion(features)
-        coordinator?.didFinishSaveProduct()
+    func isEmpty() -> Bool {
+        var result = true
+        features.forEach { features in
+            guard features.overview.isNotEmpty() else {
+                result = false
+                return
+            }
+        }
+        return result
+    }
+    
+    func tappedDone() -> Bool {
+        if isEmpty() {
+            if !(coreDataManager.isContains(text: features.first!.overview)) {
+                return true
+            } else {
+                showError!(.alreadyName)
+                return false
+            }
+        } else {
+            showError!(.emptyProductName)
+            return false
+        }
+    }
+    
+    func updateModal() -> FeaturesModel {
+        return FeaturesModel(imageName: "clothes1", titleModel: self.features)
+    }
+    
+    func tappedDelete(_ index: Int) {
+        features.remove(at: index)
+        onUpdate()
     }
     
     func cellUpdateTextField(_ indexPath : IndexPath , _ text : String) {
@@ -82,6 +113,10 @@ final class AddProductViewModel {
         @unknown default:
             isPermission(false)
         }
+    }
+    
+    deinit {
+        print("AddProductViewModel: I'm Deinit")
     }
     
 }

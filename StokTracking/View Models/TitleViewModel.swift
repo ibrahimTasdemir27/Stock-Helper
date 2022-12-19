@@ -11,7 +11,7 @@ struct FeaturesModel {
     var titleModel : [Features]
 }
 
-final class Features : Codable {
+struct Features : Codable, Hashable {
     var title : String
     var overview : String
     
@@ -20,11 +20,11 @@ final class Features : Codable {
         self.overview = overview
     }
     
-    func updateTitle(_ text : String) {
+    mutating func updateTitle(_ text : String) {
         self.title = text
     }
     
-    func updateOverview(_ text : String) {
+    mutating func updateOverview(_ text : String) {
         self.overview = text
     }
 }

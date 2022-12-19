@@ -5,7 +5,7 @@
 //  Created by İbrahim Taşdemir on 8.11.2022.
 //
 
-import UIKit
+import UIKit.UINavigationController
 
 final class AddProductCoordinator : Coordinator {
     
@@ -13,7 +13,6 @@ final class AddProductCoordinator : Coordinator {
     
     var parentCoordinator : HomeCoordinator?
     
-    var homeVC: HomeVC?
     private var navigationController : UINavigationController
     private var modalNavigationController : UINavigationController?
     
@@ -22,12 +21,12 @@ final class AddProductCoordinator : Coordinator {
     }
     
     func start() {
+        self.modalNavigationController = UINavigationController()
         let addProductVC = AddProductVC()
         let addProductViewModel = AddProductViewModel()
-        self.modalNavigationController = UINavigationController()
-        addProductVC.delegate = homeVC
         addProductViewModel.coordinator = self
-        addProductVC.viewModel = addProductViewModel
+        addProductVC.delegate = parentCoordinator
+        addProductVC.addProductVM = addProductViewModel
         modalNavigationController?.setViewControllers([addProductVC], animated: true)
         if let modalNavigationController = modalNavigationController {
             navigationController.present(modalNavigationController, animated: true)
@@ -35,18 +34,10 @@ final class AddProductCoordinator : Coordinator {
     }
     
     func didFinish() {
-        parentCoordinator?.childDidFinish(self) { bool in
-            if bool {
-                
-            }
-        }
-    }
-    
-    func didFinishSaveProduct() {
-        parentCoordinator?.didFinishSaveProduct()
+        parentCoordinator?.childDidFinish(self)
     }
     
     deinit {
-        print("deinitialized")
+        print(3 + 5)
     }
 }

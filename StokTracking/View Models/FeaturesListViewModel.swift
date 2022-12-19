@@ -11,13 +11,14 @@ import UIKit
 final class FeaturesListViewModel {
     var title = "Ürünlerim"
     var coordinator : HomeCoordinator?
-    var coreDataManager : CoreDataManager
-    
-    init(coreDataManager : CoreDataManager = .shared) {
-        self.coreDataManager = coreDataManager
-    }
+    var coreDataManager : CoreDataManager? = CoreDataManager.shared
+
+//    init(coreDataManager : CoreDataManager = .shared) {
+//        self.coreDataManager = coreDataManager
+//    }
     
     var onUpdate = {}
+    
     
     var featuresVM = [FeaturesViewModel]()
     
@@ -38,24 +39,30 @@ final class FeaturesListViewModel {
     }
     
     func reload() {
-        coreDataManager.parseCoreData { featureListModel in
-            self.featuresVM = featureListModel
-            self.onUpdate()
+        DispatchQueue.main.async { [self] in
+            coreDataManager?.parseCoreData { [weak self] featureListModel in
+                self?.featuresVM = featureListModel
+                self?.onUpdate()
+            }
         }
     }
     
     func removeItem(indexPath : Int) {
-        coreDataManager.delete(indexPath: indexPath)
+        coreDataManager?.delete(indexPath: indexPath)
         reload()
     }
     
     func didSaveProduct(vm: FeaturesModel) {
-        coreDataManager.save(vm)
+        coreDataManager?.save(vm)
     }
     
     func viewDidLoad() {
         coordinator?.updater = reload
         reload()
+    }
+    
+    func tappedBasket() {
+        coordinator?.tappedBasket()
     }
     
     func selectedItem(_ indexPath : Int) {
@@ -79,11 +86,6 @@ final class FeaturesListViewModel {
             let userDefaults = UserDefaults.standard
             userDefaults.set(newValue, forKey: "index")
         }
-    }
-    
-    func updateCoredata(vm: FeaturesModel) {
-        coreDataManager.update(selectedIndex,vm)
-        reload()
     }
 }
 

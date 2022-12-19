@@ -10,7 +10,7 @@ import UIKit
 final class TabBarController {
     
     var navigationController : UINavigationController
-    var tabbarController : UITabBarController
+    weak var tabbarController : UITabBarController?
     
     init(tabbarController: UITabBarController, navigationController : UINavigationController) {
         self.tabbarController = tabbarController
@@ -19,6 +19,7 @@ final class TabBarController {
     
     func setupTabbar(vc : [UIViewController]) {
         navigationController.isNavigationBarHidden = true
+        guard let tabbarController = tabbarController else { return }
         tabbarController.instantiate(vc: vc)
         tabbarController.tabBar.backgroundColor = .systemGray6
         tabbarController.tabBar.barTintColor = .systemGray6

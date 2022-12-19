@@ -9,14 +9,22 @@ import UIKit
 
 protocol ArrangeProductDelegate {
     func arrengedItem(vm: FeaturesModel)
-    func didFinishArrengeItem(vm: FeaturesModel)
+    func didFinishArrengeItem(vm: FeaturesModel, nav: UINavigationController)
 }
+
+protocol FinishAddProductDidSave {
+    func didSaveProduct(vm: FeaturesModel)
+}
+
 
 final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
     
     private(set) var childCoordinators: [Coordinator] = []
-    let homeVC = HomeVC()
+    var coreDataManager: CoreDataManager? = CoreDataManager.shared
+    
     var updater = {}
+    
+    
     
     private let navigationController : UINavigationController
     private let tabBarController : UITabBarController
@@ -26,8 +34,8 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
         self.navigationController = navigationController
     }
     
-    
     func start() {
+        let homeVC = HomeVC()
         let tabBar = TabBarController(tabbarController: tabBarController, navigationController: navigationController)
         let homeViewModel = FeaturesListViewModel()
         let settingsVC = SettingsVC()
@@ -42,36 +50,47 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
 
     }
     
+    func tappedBasket() {
+        let basketCoordinator = BasketCoordinator(navigationController)
+        basketCoordinator.start()
+        self.childCoordinators.append(basketCoordinator)
+    }
+    
     func arrengedItem(vm: FeaturesModel) {
         let arrangedCoordinator = ArrangedCoordinator(navigationController,vm)
-        arrangedCoordinator.delegate = self
+        arrangedCoordinator.parentCoordinator = self
         childCoordinators.append(arrangedCoordinator)
         arrangedCoordinator.start()
     }
     
-    func didFinishArrengeItem(vm: FeaturesModel) {
-        homeVC.viewModel.updateCoredata(vm: vm)
-        navigationController.dismiss(animated: true)
+    func didFinishArrengeItem(vm: FeaturesModel, nav: UINavigationController) {
+        coreDataManager?.update(vm)
+        nav.dismiss(animated: true)
+        updater()
     }
     
     func startAddProduct() {
         let addProductCoordinator = AddProductCoordinator(navigationController)
-        addProductCoordinator.homeVC = homeVC
         addProductCoordinator.parentCoordinator = self
         addProductCoordinator.start()
         childCoordinators.append(addProductCoordinator)
     }
     
-    func childDidFinish(_ childCoordinator : Coordinator , completion: @escaping(Bool) -> Void) {
+    func childDidFinish(_ childCoordinator : Coordinator) {
         if let index = childCoordinators.firstIndex(where: { coordinator -> Bool in
             return childCoordinator === coordinator
         }){
             childCoordinators.remove(at: index)
-            completion(true)
+            print("coordinators",childCoordinators)
         }
     }
     
-    func didFinishSaveProduct() {
+   
+}
+
+extension HomeCoordinator: FinishAddProductDidSave {
+    func didSaveProduct(vm: FeaturesModel) {
+        coreDataManager?.save(vm)
         self.navigationController.dismiss(animated: true)
         updater()
     }
