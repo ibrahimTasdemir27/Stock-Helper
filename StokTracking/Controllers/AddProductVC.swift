@@ -126,10 +126,9 @@ class AddProductVC : UIViewController {
         view.addSubview(addCell)
         contentViewProduct.addSubview(productImage)
         contentViewQRCode.addSubview(QRCodeImageView)
-        let navBarHeight = UIApplication.shared.statusBarHeight + (navigationController?.navigationBar.frame.height ?? 0.0)
         
         contentViewProduct.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(navBarHeight + 20)
+            make.top.equalToSuperview().offset(statusBarNavigationHeight + 20)
             make.left.equalToSuperview().offset(screenWidth * 0.05)
             make.width.equalTo(screenWidth * 0.4)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -140,7 +139,7 @@ class AddProductVC : UIViewController {
             make.width.equalToSuperview().multipliedBy(0.9)
         }
         contentViewQRCode.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(navBarHeight + 20)
+            make.top.equalToSuperview().offset(statusBarNavigationHeight + 20)
             make.right.equalToSuperview().offset(-screenWidth * 0.05)
             make.width.equalTo(screenWidth * 0.4)
             make.height.equalToSuperview().multipliedBy(0.2)

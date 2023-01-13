@@ -21,6 +21,7 @@ final class AddProductCoordinator : Coordinator {
     }
     
     func start() {
+        print("Ürün Eklemeye başladı")
         self.modalNavigationController = UINavigationController()
         let addProductVC = AddProductVC()
         let addProductViewModel = AddProductViewModel()

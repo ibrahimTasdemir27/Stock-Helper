@@ -9,7 +9,7 @@ import UIKit
 
 class SettingsVC : UIViewController {
     
-    let settingsVM = SettingsViewModel()
+    var settingsVM: SettingsViewModel!
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -56,5 +56,10 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         let text = settingsVM.modalAt(indexPath.row)
         cell.update(text, indexPath.row)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        settingsVM.didSelect(indexPath.row)
     }
 }

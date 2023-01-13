@@ -5,7 +5,7 @@
 //  Created by İbrahim Taşdemir on 2.12.2022.
 //
 
-import UIKit.UINavigationController
+import UIKit
 
 final class ArrangedCoordinator: Coordinator {
     
@@ -14,9 +14,10 @@ final class ArrangedCoordinator: Coordinator {
     private let navigationController: UINavigationController
     private var modalNavigationController: UINavigationController?
     private let featuresModel: FeaturesModel
-    weak var parentCoordinator: HomeCoordinator?
+    var parentCoordinator: HomeCoordinator?
     
     init(_ navigationController: UINavigationController, _ featuresModel: FeaturesModel) {
+        print("Init coordinator")
         self.navigationController = navigationController
         self.featuresModel = featuresModel
     }
@@ -29,9 +30,9 @@ final class ArrangedCoordinator: Coordinator {
         arrangedProductVC.arrangedVM = arrangedVM
         arrangedProductVC.delegate = parentCoordinator
         modalNavigationController?.modalTransitionStyle = .coverVertical
-        modalNavigationController?.setViewControllers([arrangedProductVC], animated: true)
+        modalNavigationController?.setViewControllers([arrangedProductVC], animated: false)
         if let modalNavigationController = modalNavigationController {
-            self.navigationController.present(modalNavigationController, animated: true)
+            self.navigationController.present(modalNavigationController, animated: false)
         }
     }
     

@@ -40,7 +40,7 @@ final class FeaturesListViewModel {
     
     func reload() {
         DispatchQueue.main.async { [self] in
-            coreDataManager?.parseCoreData { [weak self] featureListModel in
+            coreDataManager?.parseStocks { [weak self] featureListModel in
                 self?.featuresVM = featureListModel
                 self?.onUpdate()
             }
@@ -90,7 +90,7 @@ final class FeaturesListViewModel {
 }
 
 struct FeaturesViewModel {
-    let featuresModel: FeaturesModel
+    var featuresModel: FeaturesModel
     var titleModel: [Features]
     
     init(featuresModel: FeaturesModel) {
@@ -101,4 +101,5 @@ struct FeaturesViewModel {
     var imageName: String {
         return featuresModel.imageName
     }
+
 }

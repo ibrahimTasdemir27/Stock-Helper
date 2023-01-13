@@ -5,13 +5,15 @@
 //  Created by İbrahim Taşdemir on 7.11.2022.
 //
 
+import Foundation
+
 
 struct FeaturesModel {
     let imageName : String
     var titleModel : [Features]
 }
 
-struct Features : Codable, Hashable {
+struct Features : Codable {
     var title : String
     var overview : String
     

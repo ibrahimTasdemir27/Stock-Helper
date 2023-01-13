@@ -20,7 +20,7 @@ protocol FinishAddProductDidSave {
 final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
     
     private(set) var childCoordinators: [Coordinator] = []
-    var coreDataManager: CoreDataManager? = CoreDataManager.shared
+    var coreDataManager = CoreDataManager.shared
     
     var updater = {}
     
@@ -39,6 +39,9 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
         let tabBar = TabBarController(tabbarController: tabBarController, navigationController: navigationController)
         let homeViewModel = FeaturesListViewModel()
         let settingsVC = SettingsVC()
+        let settingsVM = SettingsViewModel()
+        settingsVM.coordinator = self
+        settingsVC.settingsVM = settingsVM
         let vc = [homeVC,settingsVC]
         homeVC.viewModel = homeViewModel
         homeVC.delegate = self
@@ -53,6 +56,7 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
     func tappedBasket() {
         let basketCoordinator = BasketCoordinator(navigationController)
         basketCoordinator.start()
+        basketCoordinator.parentCoordinator = self
         self.childCoordinators.append(basketCoordinator)
     }
     
@@ -64,7 +68,7 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
     }
     
     func didFinishArrengeItem(vm: FeaturesModel, nav: UINavigationController) {
-        coreDataManager?.update(vm)
+        coreDataManager.update(vm)
         nav.dismiss(animated: true)
         updater()
     }
@@ -85,12 +89,21 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
         }
     }
     
+    //MARK: -> Settings
+    
+    func didSelectSystatistic() {
+        let systatisticCoordinator = SystatisticCoordinator(navigationController)
+        systatisticCoordinator.parentCoordinator = self
+        childCoordinators.append(systatisticCoordinator)
+        systatisticCoordinator.start()
+    }
+    
    
 }
 
 extension HomeCoordinator: FinishAddProductDidSave {
     func didSaveProduct(vm: FeaturesModel) {
-        coreDataManager?.save(vm)
+        coreDataManager.save(vm)
         self.navigationController.dismiss(animated: true)
         updater()
     }

@@ -61,7 +61,7 @@ class ArrangedProductVC: UIViewController {
         collection.backgroundColor = .clear
         collection.delegate = self
         collection.dataSource = self
-        collection.showsVerticalScrollIndicator = false
+        //collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.register(AddProductCollectionViews.self, forCellWithReuseIdentifier: AddProductCollectionViews.identifier)
         return collection
@@ -131,10 +131,9 @@ class ArrangedProductVC: UIViewController {
         view.addSubview(addCell)
         contentViewProduct.addSubview(productImage)
         contentViewQRCode.addSubview(QRCodeImageView)
-        let navBarHeight = UIApplication.shared.statusBarHeight + (navigationController?.navigationBar.frame.height ?? 0.0)
         
         contentViewProduct.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(navBarHeight + 20)
+            make.top.equalToSuperview().offset(statusBarNavigationHeight + 20)
             make.left.equalToSuperview().offset(screenWidth * 0.05)
             make.width.equalTo(screenWidth * 0.4)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -145,7 +144,7 @@ class ArrangedProductVC: UIViewController {
             make.width.equalToSuperview().multipliedBy(0.5)
         }
         contentViewQRCode.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(navBarHeight + 20)
+            make.top.equalToSuperview().offset(statusBarNavigationHeight + 20)
             make.right.equalToSuperview().offset(-screenWidth * 0.05)
             make.width.equalTo(screenWidth * 0.4)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -185,12 +184,8 @@ extension ArrangedProductVC : UICollectionViewDataSource, UICollectionViewDelega
             return UICollectionViewCell()
         }
         cell.getDelegate(delegate: self)
-        cell.update(with: features,at: indexPath.row)
+        cell.update(with: features, at: indexPath.row)
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

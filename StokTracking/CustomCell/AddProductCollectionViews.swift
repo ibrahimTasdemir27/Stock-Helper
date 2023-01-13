@@ -12,10 +12,49 @@ protocol DidDeleteDelegate: AnyObject {
     func delete(_ cell: UICollectionViewCell)
 }
 
+class AttemptTextView: UITextView {
+    deinit {
+        print("I'm Deinit: UITextview")
+    }
+}
+
+class AttemptTextField: UITextField {
+    deinit {
+        print("I'm Deinit: UITextField")
+    }
+}
+
+class AttemptLabel: UILabel {
+    deinit {
+        print("I'm Deinit: UITextField")
+    }
+}
+
 class AddProductCollectionViews : UICollectionViewCell {
-    let titleTextField = UITextField()
-    let overviewTextView = UITextView()
-    let productView = UIView()
+    lazy var titleTextField: AttemptTextField = {
+        let textField = AttemptTextField()
+        textField.textAlignment = .left
+        textField.backgroundColor = .white
+        textField.textColor = .black
+        textField.layer.masksToBounds = true
+        textField.layer.cornerRadius = 20
+        textField.staticPadding(leftPadding: 15,rightPadding: 15)
+        return textField
+    }()
+    lazy var overviewTextView: AttemptTextView = {
+        let textView = AttemptTextView()
+        textView.backgroundColor = .white
+        textView.textColor = .black
+        textView.layer.masksToBounds = true
+        textView.layer.cornerRadius = 30
+        textView.font = UIFont.systemFont(ofSize: 17)
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+        return textView
+    }()
+    lazy var productView: UIView = {
+        let view = UIView()
+        return view
+    }()
     lazy var deleteCell: UIImageView = {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tappedDelete))
         let imageView = UIImageView()
@@ -25,15 +64,16 @@ class AddProductCollectionViews : UICollectionViewCell {
         imageView.image = UIImage(named: "minus")
         return imageView
     }()
-    weak var delegate: DidDeleteDelegate?
+    var delegate: DidDeleteDelegate?
     
     deinit {
+        titleTextField.removeFromSuperview()
+        overviewTextView.removeFromSuperview()
         print("AddProductCollectionViews: I'm deinit")
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
         setupHierarchy()
     }
     
@@ -75,22 +115,6 @@ class AddProductCollectionViews : UICollectionViewCell {
         }
     }
     
-    private func setupViews() {
-        titleTextField.textAlignment = .left
-        titleTextField.backgroundColor = .white
-        titleTextField.textColor = .black
-        titleTextField.layer.masksToBounds = true
-        titleTextField.layer.cornerRadius = 20
-        titleTextField.staticPadding(leftPadding: 15,rightPadding: 15)
-        
-        overviewTextView.backgroundColor = .white
-        overviewTextView.textColor = .black
-        overviewTextView.layer.masksToBounds = true
-        overviewTextView.layer.cornerRadius = 30
-        overviewTextView.font = UIFont.systemFont(ofSize: 17)
-        overviewTextView.textContainerInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
-    }
-    
     @objc private func tappedDelete(_ sender: UIImageView) {
         guard let delegate = self.delegate else { return }
         delegate.delete(self)
@@ -114,4 +138,20 @@ class AddProductCollectionViews : UICollectionViewCell {
         self.delegate = delegate
     }
     
+    
+    
+    
+}
+
+
+extension UICollectionViewCell {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UICollectionViewCell.dismissKeyboard))
+        self.addGestureRecognizer(tap)
+
+    }
+
+    @objc func dismissKeyboard() {
+        self.endEditing(true)
+    }
 }

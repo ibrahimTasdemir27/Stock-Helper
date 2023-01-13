@@ -56,13 +56,18 @@ final class AddProductViewModel {
     func tappedDone() -> Bool {
         if isEmpty() {
             if !(coreDataManager.isContains(text: features.first!.overview)) {
-                return true
+                if let _ = Int(features[1].overview), let _ = Int(features[2].overview) {
+                    return true
+                } else {
+                    showError!(.isNotNumber)
+                    return false
+                }
             } else {
                 showError!(.alreadyName)
                 return false
             }
         } else {
-            showError!(.emptyProductName)
+            showError!(.emptyFeatures)
             return false
         }
     }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UITextField{
+extension UITextField {
     
     func staticPadding(leftPadding : Int = 0 , rightPadding : Int = 0) {
         guard self.text != nil else {

@@ -11,7 +11,9 @@ class SettingsViewModel {
     
     let title = "Ayarlar"
     
-    var settings = ["Gece Modu","Uygulamayı Paylaş","Çıkış Yap"]
+    var coordinator: HomeCoordinator?
+    
+    var settings = ["Gece Modu","İstatistikler","Uygulamayı Paylaş","Çıkış Yap"]
     
     func numberOfRows() -> Int {
         return settings.count
@@ -19,5 +21,14 @@ class SettingsViewModel {
     
     func modalAt(_ index: Int) -> String {
         return settings[index]
+    }
+    
+    func didSelect(_ index: Int) {
+        switch index {
+        case 1:
+            coordinator?.didSelectSystatistic()
+        default:
+            print("Defaul")
+        }
     }
 }

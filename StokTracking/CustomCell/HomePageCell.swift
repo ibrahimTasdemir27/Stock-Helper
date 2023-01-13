@@ -8,19 +8,44 @@
 import UIKit
 import SnapKit
 
-class HomePageCell : UITableViewCell {
+class HomePageCell : UITableViewCell, SkeletonLoadable {
     
     class var identifier: String {
         return String(describing: self)
     }
     
-    let productImageView = UIImageView()
+    let imageLayer = CAGradientLayer()
+    let collectionLayer = CAGradientLayer()
+    
+    lazy var productImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.isHidden = true
+        imageView.layer.shadowColor = UIColor.purple.cgColor
+        imageView.layer.shadowRadius = 10
+        imageView.layer.shadowOffset = .zero
+        DispatchQueue.main.async {
+            imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
+        }
+        imageView.layer.shouldRasterize = true
+        imageView.layer.shadowOpacity = 1
+        imageView.layer.rasterizationScale = UIScreen.main.scale
+        return imageView
+    }()
     lazy var productView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 40
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
+//        view.layer.shadowColor = UIColor.purple.cgColor
+//        view.layer.shadowOpacity = 1
+//        view.layer.shadowOffset = .zero
+//        view.layer.shadowRadius = 15
+//        DispatchQueue.main.async {
+//            view.layer.shadowPath = UIBezierPath(rect: view.bounds.union(CGRect(x: -5, y: -7, width: view.frame.width + 10, height: view.frame.height + 14))).cgPath
+//        }
+//        view.layer.shouldRasterize = true
+//        view.layer.rasterizationScale = UIScreen.main.scale
         return view
     }()
     private let changeImage : UIButton = {
@@ -59,6 +84,29 @@ class HomePageCell : UITableViewCell {
     private func setupUI() {
         selectionStyle = .none
         backgroundColor = .systemGray6
+        
+        productView.layer.addSublayer(imageLayer.caLayer())
+        mainCollectionView.layer.addSublayer(collectionLayer.caLayer())
+        
+        let contentGroup = makeAnimationGroup()
+        imageLayer.add(contentGroup, forKey: "backgroundColor")
+        let detailGroup = makeAnimationGroup(previousGroup: contentGroup)
+        collectionLayer.add(detailGroup, forKey: "backgroundColor")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.42) { [self] in
+            imageLayer.removeAllAnimations()
+            collectionLayer.removeAllAnimations()
+            productImageView.isHidden = false
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageLayer.frame = productView.bounds
+        imageLayer.cornerRadius = productView.layer.cornerRadius
+        
+        
+        collectionLayer.frame = mainCollectionView.bounds
+        collectionLayer.cornerRadius = 10
     }
 
     private func setupHierarchy() {

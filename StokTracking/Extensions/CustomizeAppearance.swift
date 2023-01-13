@@ -17,6 +17,9 @@ extension UIApplication: CustomizeAppearance {
         UIBarButtonItem.customizeAppearance()
         UITableView.customizeAppearance()
         UICollectionView.customizeAppearance()
+        UITabBarAppearance.customizeAppearance()
+        UITabBar.customizeAppearance()
+        
     }
 }
 
@@ -32,9 +35,31 @@ extension UINavigationBar: CustomizeAppearance {
     }
 }
 
+
 extension UIBarButtonItem: CustomizeAppearance {
     static func customizeAppearance() {
         appearance().tintColor = .white
+    }
+}
+
+extension UITabBarAppearance: CustomizeAppearance {
+    static func customizeAppearance() {
+        UITabBarAppearance().backgroundEffect = nil
+        UITabBarAppearance().backgroundColor = .systemGray6
+        
+    }
+    
+    func makeScrollAppearance() -> UITabBarAppearance {
+        return self
+    }
+}
+
+extension UITabBar: CustomizeAppearance {
+    static func customizeAppearance() {
+        appearance().backgroundColor = .systemGray6
+        appearance().barTintColor = .systemGray6
+        appearance().tintColor = .secondaryColor
+        appearance().scrollEdgeAppearance = UITabBarAppearance().makeScrollAppearance()
     }
 }
 

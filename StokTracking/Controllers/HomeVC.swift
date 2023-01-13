@@ -46,9 +46,10 @@ class HomeVC : UIViewController {
         viewModel.viewDidLoad()
         initViewModel()
         setupUI()
-        
         setupHierarchy()
+
     }
+    
     
     func initViewModel() {
         viewModel.onUpdate = {
@@ -150,4 +151,3 @@ extension HomeVC : UICollectionViewDelegate, UICollectionViewDataSource, UIColle
         return CGSize(width: collectionView.bounds.width / 2 , height: collectionView.bounds.height)
     }
 }
-

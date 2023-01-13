@@ -9,15 +9,21 @@ import Foundation
 
 extension String {
     func isNotEmpty() -> Bool {
-        var empty = false
-        self.forEach {
-            if $0 != " " {
-                empty = true
+        if self.isEmpty { return false } else {
+            var iterator = self.makeIterator()
+            while let text = iterator.next() {
+                if text != " " { return true }
             }
         }
-        if self.isEmpty {
-            empty = false
-        }
-        return empty
+       
+//        var empty = false
+//        self.forEach {
+//            if $0 != " " {
+//                empty = true
+//            }
+//        }
+//
+        //return empty
+        return false
     }
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0E31322961C41C00666088 /* SystatiscticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E31312961C41C00666088 /* SystatiscticViewController.swift */; };
+		4F0E31342961C61500666088 /* SystatisticCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E31332961C61500666088 /* SystatisticCoordinator.swift */; };
+		4F0E31362961C6A700666088 /* SystatisticViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E31352961C6A700666088 /* SystatisticViewModel.swift */; };
 		4F2C592A2944DE7900CADA82 /* CustomizeAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59292944DE7900CADA82 /* CustomizeAppearance.swift */; };
 		4F2C592C2944FF5900CADA82 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C592B2944FF5900CADA82 /* SettingsViewModel.swift */; };
 		4F2C592E2945008200CADA82 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C592D2945008200CADA82 /* SettingsCell.swift */; };
@@ -14,14 +17,13 @@
 		4F2C59322945054F00CADA82 /* UILabel+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59312945054F00CADA82 /* UILabel+Ext.swift */; };
 		4F2C59342945095800CADA82 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59332945095800CADA82 /* UIViewController+Ext.swift */; };
 		4F2C5936294610DD00CADA82 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C5935294610DD00CADA82 /* PresentationViewController.swift */; };
-		4F2C593929461A1700CADA82 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F2C593829461A1700CADA82 /* OpenSans-Bold.ttf */; };
-		4F2C593B29461A2000CADA82 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F2C593A29461A2000CADA82 /* OpenSans-ExtraBold.ttf */; };
 		4F2C599B294E293300CADA82 /* BasketCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C599A294E293300CADA82 /* BasketCoordinator.swift */; };
 		4F2C599E294E29D600CADA82 /* BasketVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C599D294E29D600CADA82 /* BasketVC.swift */; };
 		4F2C59A0294E5BC600CADA82 /* BasketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C599F294E5BC600CADA82 /* BasketViewModel.swift */; };
 		4F2C59A4294F4CCB00CADA82 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59A3294F4CCB00CADA82 /* String+Ext.swift */; };
 		4F2C59A6294FAC6E00CADA82 /* BasketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59A5294FAC6E00CADA82 /* BasketCell.swift */; };
 		4F2C59A8294FD94100CADA82 /* BasketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2C59A7294FD94100CADA82 /* BasketTableViewCell.swift */; };
+		4F2F1946295DDEB30016D938 /* CALayer+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2F1945295DDEB30016D938 /* CALayer+Ext.swift */; };
 		4F3D4826293A6A3300F335FD /* ArrangedProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4825293A6A3300F335FD /* ArrangedProductVC.swift */; };
 		4F3D4828293A6A7000F335FD /* ArrangedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4827293A6A7000F335FD /* ArrangedCoordinator.swift */; };
 		4F3D482A293A6DF900F335FD /* ArrangedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3D4829293A6DF900F335FD /* ArrangedViewModel.swift */; };
@@ -51,13 +53,26 @@
 		4F45E231291AFCA5002A8294 /* AddProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F45E230291AFCA5002A8294 /* AddProductViewModel.swift */; };
 		4F51FE36291C397700FE6B25 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51FE35291C397700FE6B25 /* UITextField+Extensions.swift */; };
 		4F51FE38291D124400FE6B25 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51FE37291D124400FE6B25 /* CoreDataManager.swift */; };
+		4F5CE83729519A8F00628FF8 /* BasketChildVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5CE83629519A8F00628FF8 /* BasketChildVC.swift */; };
+		4F5CE8392951A3F800628FF8 /* BasketChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5CE8382951A3F800628FF8 /* BasketChildViewModel.swift */; };
+		4F5CE844295358CF00628FF8 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F5CE843295358CF00628FF8 /* OpenSans-Bold.ttf */; };
+		4F5CE846295358D800628FF8 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F5CE845295358D800628FF8 /* OpenSans-ExtraBold.ttf */; };
+		4FA8960C296501F20003E279 /* SystatisticChildCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8960B296501F20003E279 /* SystatisticChildCell.swift */; };
+		4FA8960E296517DA0003E279 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA8960D296517DA0003E279 /* Date+Ext.swift */; };
+		4FA896112967A7000003E279 /* SystatisticDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA896102967A7000003E279 /* SystatisticDetailCell.swift */; };
 		4FC79C942934F7EB00F1FCB1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC79C932934F7EB00F1FCB1 /* UIColor+Extensions.swift */; };
 		4FC79CE0293660CE00F1FCB1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC79CDF293660CE00F1FCB1 /* UIView+Extensions.swift */; };
+		4FF28213296A3CC0000DCE37 /* CGFloat+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF28212296A3CC0000DCE37 /* CGFloat+Ext.swift */; };
+		4FF28215296F3BF0000DCE37 /* CalendarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF28214296F3BF0000DCE37 /* CalendarCoordinator.swift */; };
+		4FF28217296F3EA8000DCE37 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF28216296F3EA8000DCE37 /* CalendarController.swift */; };
 		FD7C23B3EB5CD8EC4A33465E /* Pods_StokTracking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B63A8060F2A7191155F92DC /* Pods_StokTracking.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0B63A8060F2A7191155F92DC /* Pods_StokTracking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StokTracking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F0E31312961C41C00666088 /* SystatiscticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystatiscticViewController.swift; sourceTree = "<group>"; };
+		4F0E31332961C61500666088 /* SystatisticCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystatisticCoordinator.swift; sourceTree = "<group>"; };
+		4F0E31352961C6A700666088 /* SystatisticViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystatisticViewModel.swift; sourceTree = "<group>"; };
 		4F2C59292944DE7900CADA82 /* CustomizeAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeAppearance.swift; sourceTree = "<group>"; };
 		4F2C592B2944FF5900CADA82 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		4F2C592D2945008200CADA82 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -65,14 +80,13 @@
 		4F2C59312945054F00CADA82 /* UILabel+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
 		4F2C59332945095800CADA82 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		4F2C5935294610DD00CADA82 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
-		4F2C593829461A1700CADA82 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../../../Open_Sans/static/OpenSans/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		4F2C593A29461A2000CADA82 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBold.ttf"; path = "../../../Open_Sans/static/OpenSans/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		4F2C599A294E293300CADA82 /* BasketCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketCoordinator.swift; sourceTree = "<group>"; };
 		4F2C599D294E29D600CADA82 /* BasketVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketVC.swift; sourceTree = "<group>"; };
 		4F2C599F294E5BC600CADA82 /* BasketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewModel.swift; sourceTree = "<group>"; };
 		4F2C59A3294F4CCB00CADA82 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		4F2C59A5294FAC6E00CADA82 /* BasketCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketCell.swift; sourceTree = "<group>"; };
 		4F2C59A7294FD94100CADA82 /* BasketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketTableViewCell.swift; sourceTree = "<group>"; };
+		4F2F1945295DDEB30016D938 /* CALayer+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ext.swift"; sourceTree = "<group>"; };
 		4F3D4825293A6A3300F335FD /* ArrangedProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangedProductVC.swift; sourceTree = "<group>"; };
 		4F3D4827293A6A7000F335FD /* ArrangedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangedCoordinator.swift; sourceTree = "<group>"; };
 		4F3D4829293A6DF900F335FD /* ArrangedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangedViewModel.swift; sourceTree = "<group>"; };
@@ -104,8 +118,18 @@
 		4F45E230291AFCA5002A8294 /* AddProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewModel.swift; sourceTree = "<group>"; };
 		4F51FE35291C397700FE6B25 /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		4F51FE37291D124400FE6B25 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		4F5CE83629519A8F00628FF8 /* BasketChildVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketChildVC.swift; sourceTree = "<group>"; };
+		4F5CE8382951A3F800628FF8 /* BasketChildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketChildViewModel.swift; sourceTree = "<group>"; };
+		4F5CE843295358CF00628FF8 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../../../Open_Sans/static/OpenSans/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		4F5CE845295358D800628FF8 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBold.ttf"; path = "../../../Open_Sans/static/OpenSans/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		4FA8960B296501F20003E279 /* SystatisticChildCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystatisticChildCell.swift; sourceTree = "<group>"; };
+		4FA8960D296517DA0003E279 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		4FA896102967A7000003E279 /* SystatisticDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystatisticDetailCell.swift; sourceTree = "<group>"; };
 		4FC79C932934F7EB00F1FCB1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		4FC79CDF293660CE00F1FCB1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		4FF28212296A3CC0000DCE37 /* CGFloat+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Ext.swift"; sourceTree = "<group>"; };
+		4FF28214296F3BF0000DCE37 /* CalendarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCoordinator.swift; sourceTree = "<group>"; };
+		4FF28216296F3EA8000DCE37 /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		A39FE9978105A9DBBA3D30E1 /* Pods-StokTracking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StokTracking.debug.xcconfig"; path = "Target Support Files/Pods-StokTracking/Pods-StokTracking.debug.xcconfig"; sourceTree = "<group>"; };
 		FD4E7C08D402C04CFD7BF162 /* Pods-StokTracking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StokTracking.release.xcconfig"; path = "Target Support Files/Pods-StokTracking/Pods-StokTracking.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,11 +154,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4F0E31302961C3FB00666088 /* SettingsChild */ = {
+			isa = PBXGroup;
+			children = (
+				4F0E31312961C41C00666088 /* SystatiscticViewController.swift */,
+				4FF28216296F3EA8000DCE37 /* CalendarController.swift */,
+			);
+			path = SettingsChild;
+			sourceTree = "<group>";
+		};
 		4F2C593729461A0200CADA82 /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				4F2C593A29461A2000CADA82 /* OpenSans-ExtraBold.ttf */,
-				4F2C593829461A1700CADA82 /* OpenSans-Bold.ttf */,
+				4F5CE845295358D800628FF8 /* OpenSans-ExtraBold.ttf */,
+				4F5CE843295358CF00628FF8 /* OpenSans-Bold.ttf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -156,6 +189,8 @@
 				4F2C592D2945008200CADA82 /* SettingsCell.swift */,
 				4F2C59A5294FAC6E00CADA82 /* BasketCell.swift */,
 				4F2C59A7294FD94100CADA82 /* BasketTableViewCell.swift */,
+				4FA8960B296501F20003E279 /* SystatisticChildCell.swift */,
+				4FA896102967A7000003E279 /* SystatisticDetailCell.swift */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -168,7 +203,9 @@
 				4F45E226291ACEC7002A8294 /* AddProductVC.swift */,
 				4F3D4825293A6A3300F335FD /* ArrangedProductVC.swift */,
 				4F2C599D294E29D600CADA82 /* BasketVC.swift */,
+				4F5CE83629519A8F00628FF8 /* BasketChildVC.swift */,
 				4F45E1A229183571002A8294 /* SettingsVC.swift */,
+				4F0E31302961C3FB00666088 /* SettingsChild */,
 				4F2C599C294E299D00CADA82 /* Intro */,
 			);
 			path = Controllers;
@@ -183,6 +220,8 @@
 				4F3D4829293A6DF900F335FD /* ArrangedViewModel.swift */,
 				4F2C592B2944FF5900CADA82 /* SettingsViewModel.swift */,
 				4F2C599F294E5BC600CADA82 /* BasketViewModel.swift */,
+				4F5CE8382951A3F800628FF8 /* BasketChildViewModel.swift */,
+				4F0E31352961C6A700666088 /* SystatisticViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -235,6 +274,8 @@
 				4F45E224291AC7EC002A8294 /* AddProductCoordinator.swift */,
 				4F3D4827293A6A7000F335FD /* ArrangedCoordinator.swift */,
 				4F2C599A294E293300CADA82 /* BasketCoordinator.swift */,
+				4F0E31332961C61500666088 /* SystatisticCoordinator.swift */,
+				4FF28214296F3BF0000DCE37 /* CalendarCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -253,6 +294,9 @@
 				4F2C59312945054F00CADA82 /* UILabel+Ext.swift */,
 				4F2C59332945095800CADA82 /* UIViewController+Ext.swift */,
 				4F2C59A3294F4CCB00CADA82 /* String+Ext.swift */,
+				4F2F1945295DDEB30016D938 /* CALayer+Ext.swift */,
+				4FA8960D296517DA0003E279 /* Date+Ext.swift */,
+				4FF28212296A3CC0000DCE37 /* CGFloat+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -345,9 +389,9 @@
 			files = (
 				4F45E197291831CA002A8294 /* LaunchScreen.storyboard in Resources */,
 				4F45E194291831CA002A8294 /* Assets.xcassets in Resources */,
-				4F2C593929461A1700CADA82 /* OpenSans-Bold.ttf in Resources */,
+				4F5CE844295358CF00628FF8 /* OpenSans-Bold.ttf in Resources */,
 				4F45E18F291831C9002A8294 /* Main.storyboard in Resources */,
-				4F2C593B29461A2000CADA82 /* OpenSans-ExtraBold.ttf in Resources */,
+				4F5CE846295358D800628FF8 /* OpenSans-ExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,14 +449,21 @@
 				4F2C59342945095800CADA82 /* UIViewController+Ext.swift in Sources */,
 				4F2C59A4294F4CCB00CADA82 /* String+Ext.swift in Sources */,
 				4F3D482A293A6DF900F335FD /* ArrangedViewModel.swift in Sources */,
+				4FA8960E296517DA0003E279 /* Date+Ext.swift in Sources */,
 				4F45E225291AC7EC002A8294 /* AddProductCoordinator.swift in Sources */,
 				4F2C5936294610DD00CADA82 /* PresentationViewController.swift in Sources */,
 				4F45E22B291AEE05002A8294 /* UIImage+Extensions.swift in Sources */,
 				4F3D4826293A6A3300F335FD /* ArrangedProductVC.swift in Sources */,
+				4F0E31362961C6A700666088 /* SystatisticViewModel.swift in Sources */,
 				4F2C59A8294FD94100CADA82 /* BasketTableViewCell.swift in Sources */,
+				4FA8960C296501F20003E279 /* SystatisticChildCell.swift in Sources */,
 				4F2C599B294E293300CADA82 /* BasketCoordinator.swift in Sources */,
+				4F0E31342961C61500666088 /* SystatisticCoordinator.swift in Sources */,
+				4FA896112967A7000003E279 /* SystatisticDetailCell.swift in Sources */,
 				4F2C592C2944FF5900CADA82 /* SettingsViewModel.swift in Sources */,
 				4F45E192291831C9002A8294 /* StokTracking.xcdatamodeld in Sources */,
+				4FF28213296A3CC0000DCE37 /* CGFloat+Ext.swift in Sources */,
+				4FF28217296F3EA8000DCE37 /* CalendarController.swift in Sources */,
 				4FC79C942934F7EB00F1FCB1 /* UIColor+Extensions.swift in Sources */,
 				4F51FE38291D124400FE6B25 /* CoreDataManager.swift in Sources */,
 				4F45E1A7291841B6002A8294 /* TabBarController.swift in Sources */,
@@ -420,20 +471,24 @@
 				4F45E1B629185BDA002A8294 /* FeaturesListViewModel.swift in Sources */,
 				4F45E22F291AF522002A8294 /* AddProductCollectionViews.swift in Sources */,
 				4FC79CE0293660CE00F1FCB1 /* UIView+Extensions.swift in Sources */,
+				4FF28215296F3BF0000DCE37 /* CalendarCoordinator.swift in Sources */,
 				4F2C5930294502A200CADA82 /* UITableView+Ext.swift in Sources */,
 				4F45E1F129190E2A002A8294 /* UITabBarController+Extensions.swift in Sources */,
 				4F2C599E294E29D600CADA82 /* BasketVC.swift in Sources */,
+				4F0E31322961C41C00666088 /* SystatiscticViewController.swift in Sources */,
 				4F3D4828293A6A7000F335FD /* ArrangedCoordinator.swift in Sources */,
 				4F45E227291ACEC7002A8294 /* AddProductVC.swift in Sources */,
 				4F45E19F29183280002A8294 /* AppCoordinator.swift in Sources */,
 				4F45E22D291AEEA1002A8294 /* Helper.swift in Sources */,
 				4F51FE36291C397700FE6B25 /* UITextField+Extensions.swift in Sources */,
 				4F45E229291AEB3D002A8294 /* UIApplication+Extensions.swift in Sources */,
+				4F2F1946295DDEB30016D938 /* CALayer+Ext.swift in Sources */,
 				4F45E188291831C9002A8294 /* AppDelegate.swift in Sources */,
 				4F45E1B929186165002A8294 /* Constants.swift in Sources */,
 				4F2C592A2944DE7900CADA82 /* CustomizeAppearance.swift in Sources */,
 				4F45E18A291831C9002A8294 /* SceneDelegate.swift in Sources */,
 				4F2C592E2945008200CADA82 /* SettingsCell.swift in Sources */,
+				4F5CE8392951A3F800628FF8 /* BasketChildViewModel.swift in Sources */,
 				4F45E1A1291833FD002A8294 /* HomeCoordinator.swift in Sources */,
 				4F45E231291AFCA5002A8294 /* AddProductViewModel.swift in Sources */,
 				4F45E1B2291852B8002A8294 /* HomePageCell.swift in Sources */,
@@ -441,6 +496,7 @@
 				4F2C59A6294FAC6E00CADA82 /* BasketCell.swift in Sources */,
 				4F45E1BC29186960002A8294 /* BaseCollectionViews.swift in Sources */,
 				4F45E1BE29186B1F002A8294 /* TitleViewModel.swift in Sources */,
+				4F5CE83729519A8F00628FF8 /* BasketChildVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

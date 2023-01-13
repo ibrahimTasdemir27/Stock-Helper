@@ -6,7 +6,7 @@
 //
 
 import CoreData
-import UIKit
+
 
 enum FieldKeyCoredata: String {
     case stocks = "Stocks"
@@ -16,28 +16,46 @@ enum FieldKeyCoredata: String {
 }
 
 enum ShowError: Error {
-    case emptyProductName
+    case emptyFeatures
     case alreadyName
+    case isNotNumber
     
     var errorText: String  {
         switch self {
-        case .emptyProductName:         return "Boş olan kutucuklar var"
+        case .emptyFeatures:         return "Boş olan kutucuklar var"
             
-        case .alreadyName:              return "Bu isimde bir ürün zaten var"
+        case .alreadyName:           return "Bu isimde bir ürün zaten var"
+            
+        case .isNotNumber:           return "Ürün fiyatı ve Ürün adedi sayılardan oluşmalıdır"
             
         }
     }
     
     var errorSubtitle: String {
         switch self {
-        case .emptyProductName:         return "Lütfen boş alanları doldurun"
-        case .alreadyName:              return "Lütfen farklı bir isim giriniz"
+        case .emptyFeatures:         return "Lütfen boş alanları doldurun"
+        case .alreadyName:           return "Lütfen farklı bir isim giriniz"
+        case .isNotNumber:           return "Lütfen sayı olacak şekilde yeniden giriniz"
         }
     }
 }
 
+
+enum CoreAction {
+    case editing
+    case selling
+}
+
+
 final class CoreDataManager {
     static let shared = CoreDataManager()
+    var action: CoreAction
+    
+    
+    init(_ action: CoreAction = CoreAction.editing) {
+        self.action = action
+    }
+    
     
     lazy var persistentContainer : NSPersistentContainer = {
         let persistentContainer = NSPersistentContainer(name: "StokTracking")
@@ -51,14 +69,20 @@ final class CoreDataManager {
         persistentContainer.viewContext
     }
     
+    var stocks: [Stocks] {
+        self.fetch()
+    }
+    
+    var soldItem: [Selling] {
+        self.fetchSold()
+    }
+    
     func save(_ vm: FeaturesModel) {
-        let dictionary : [String : [Features]] = ["dict":vm.titleModel]
-        
         do {
-            let encodedDictionary = try JSONEncoder().encode(dictionary)
+            let encodeArray = try JSONEncoder().encode(vm.titleModel)
             let stocks = Stocks(context: moc)
             stocks.setValue(vm.imageName, forKey: FieldKeyCoredata.image.rawValue)
-            stocks.setValue(encodedDictionary, forKey: FieldKeyCoredata.texts.rawValue)
+            stocks.setValue(encodeArray, forKey: FieldKeyCoredata.texts.rawValue)
             try moc.save()
         } catch {
             print("error: ", error)
@@ -77,30 +101,63 @@ final class CoreDataManager {
     }
     
     func update(_ vm: FeaturesModel) {
+        print("Updating quantity", vm.titleModel[2].overview)
         let indexPa = usDef.index.indexPath
-        let dictionary = ["dict":vm.titleModel]
         do {
-            let encodedDictionary = try JSONEncoder().encode(dictionary)
+            let encodedArray = try JSONEncoder().encode(vm.titleModel)
             let fetchRequest = NSFetchRequest<Stocks>(entityName: FieldKeyCoredata.stocks.rawValue)
             let stocks = try moc.fetch(fetchRequest)
             stocks[indexPa].setValue(vm.imageName, forKey: FieldKeyCoredata.image.rawValue)
-            stocks[indexPa].setValue(encodedDictionary, forKey: FieldKeyCoredata.texts.rawValue)
+            stocks[indexPa].setValue(encodedArray, forKey: FieldKeyCoredata.texts.rawValue)
             try moc.save()
         } catch {
             print(error)
         }
-}
+    }
+    
+    func fetchSold() -> [Selling] {
+        do {
+            let fetchRequest = NSFetchRequest<Selling>(entityName: "Selling")
+            let soldItem = try moc.fetch(fetchRequest)
+            return soldItem
+        } catch {
+            print(error.localizedDescription)
+            return []
+        }
+    }
+    
+    func isSell(_ vm: [BasketModel]) {
+//        let totalPrice = vm.reduce(0) { partialResult, model in
+//            return partialResult + model.quantity * model.price
+//        }
+//        let filteredName = vm.map { model in
+//            return model.name
+//        }
+//        let filterName = vm.reduce(into: []) { (partialResult: inout [String] , model) in
+//            partialResult.append(model.name)
+//        }
+        do {
+            let decodeModel = try JSONEncoder().encode(vm)
+            let selling = Selling(context: moc)
+            selling.setValue(decodeModel, forKey: "soldItem")
+            try moc.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     
     func isContains(text: String) -> Bool {
         var contains = false
-        guard let title = userDefaults.value(forKey: "title") as? String else { return true }
-        if title == text {
-            contains = false
-        } else {
-            parseCoreData { featuresViewModel in
-                featuresViewModel.forEach { features in
-                    if features.titleModel.first!.overview == text {
-                        contains = true
+        if let title = userDefaults.value(forKey: "title") as? String {
+            if title == text {
+                contains = false
+            } else {
+                parseStocks { featuresViewModel in
+                    featuresViewModel.forEach { features in
+                        if features.titleModel.first!.overview == text {
+                            contains = true
+                        }
                     }
                 }
             }
@@ -133,30 +190,35 @@ final class CoreDataManager {
         }
     }
     
-    func parseCoreData(completion : @escaping ([FeaturesViewModel]) -> Void) {
-        let stocks = self.fetch()
-        var featuresVM = [FeaturesViewModel]()
-        var features = [Features]()
-        featuresVM = stocks.map({ stocks in
-            let data = stocks.texts
-            let imageName = stocks.image
+    func parseStocks(completion : @escaping (escapeFeaturesViewModels)) {
+        let featuresViewModels = stocks.reduce(into: []) { (partialResult: inout [FeaturesViewModel], stock) in
+            guard let data = stock.texts, let imageName = stock.image else { return }
             do {
-                let result = try JSONDecoder().decode([String : [Features]].self, from: data!)
-                let titles = result.values
-                titles.forEach { model in
-                    features = model
-                }
-                
+                let result = try JSONDecoder().decode(decodeFeatures.self, from: data)
+                partialResult.append(FeaturesViewModel(featuresModel: FeaturesModel(imageName: imageName, titleModel: result)))
             } catch {
                 print(error.localizedDescription)
             }
-            return FeaturesViewModel(featuresModel: FeaturesModel(imageName: imageName!, titleModel: features))
-        })
-        completion(featuresVM)
+        }
+        completion(featuresViewModels)
     }
     
-    deinit {
-        print("I'm deinit: CoreDataManager")
+    
+    func parseSold(completion: @escaping([BasketModel]) -> Void) {
+        let basketViewModels = soldItem.reduce(into: []) { (partialResult: inout [BasketModel], model) in
+            guard let data = model.soldItem else { return }
+            do {
+                let result = try JSONDecoder().decode([BasketModel].self, from: data)
+                partialResult.append(contentsOf: result)
+            } catch {
+                print("parsError",error.localizedDescription)
+            }
+        }
+        completion(basketViewModels)
     }
+    
+    
 }
+
+
 

@@ -39,10 +39,10 @@ final class ArrangedViewModel {
         coordinator?.didFinish()
     }
     
-    func isEmpty() -> Bool {
+    func isNotEmpty() -> Bool {
         var result = true
         featuresModel.titleModel.forEach { features in
-            guard features.overview.isNotEmpty() else {
+            guard features.overview.isNotEmpty() && features.title.isNotEmpty() else {
                 result = false
                 return
             }
@@ -51,15 +51,20 @@ final class ArrangedViewModel {
     }
     
     func tappedDone() -> Bool {
-        if isEmpty() {
+        if isNotEmpty() {
             if !(coreDataManager?.isContains(text: featuresModel.titleModel.first!.overview))! {
-                return true
+                if let _ = Double(featuresModel.titleModel[1].overview), let _ = Double(featuresModel.titleModel[2].overview) {
+                    return true
+                } else {
+                    showError!(.isNotNumber)
+                    return false
+                }
             } else {
                 showError!(.alreadyName)
                 return false
             }
         } else {
-            showError!(.emptyProductName)
+            showError!(.emptyFeatures)
             return false
         }
     }

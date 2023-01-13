@@ -18,7 +18,7 @@ extension UIView {
         })
     }
     
-    func shake(){
+    func shake() {
         let shake = CABasicAnimation(keyPath: "position")
         shake.duration = 0.1
         shake.repeatCount = 2
@@ -32,4 +32,23 @@ extension UIView {
         layer.add(shake, forKey: "position")
     }
     
+    func isCurcular() {
+        DispatchQueue.main.async {
+            self.layer.masksToBounds = true
+            self.layer.cornerRadius = self.frame.width / 2
+        }
+    }
+    
+    func systaTistic() {
+        let shapeLayer = CAShapeLayer()
+        let circularPath = UIBezierPath(arcCenter: self.center, radius: CGFloat(self.frame.width / 2), startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        shapeLayer.path = circularPath.cgPath
+        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.lineWidth = 10
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineCap = CAShapeLayerLineCap.round
+        shapeLayer.strokeEnd = CGFloat(0.8)
+        self.layer.addSublayer(shapeLayer)
+    }
 }
