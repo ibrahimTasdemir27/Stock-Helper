@@ -40,7 +40,6 @@ enum ShowError: Error {
     }
 }
 
-
 enum CoreAction {
     case editing
     case selling
@@ -101,7 +100,6 @@ final class CoreDataManager {
     }
     
     func update(_ vm: FeaturesModel) {
-        print("Updating quantity", vm.titleModel[2].overview)
         let indexPa = usDef.index.indexPath
         do {
             let encodedArray = try JSONEncoder().encode(vm.titleModel)
@@ -126,7 +124,7 @@ final class CoreDataManager {
         }
     }
     
-    func isSell(_ vm: [BasketModel]) {
+    func isSell(_ vm: [CartModel]) {
 //        let totalPrice = vm.reduce(0) { partialResult, model in
 //            return partialResult + model.quantity * model.price
 //        }
@@ -204,17 +202,17 @@ final class CoreDataManager {
     }
     
     
-    func parseSold(completion: @escaping([BasketModel]) -> Void) {
-        let basketViewModels = soldItem.reduce(into: []) { (partialResult: inout [BasketModel], model) in
+    func parseSold(completion: @escaping([CartModel]) -> Void) {
+        let cartModels = soldItem.reduce(into: []) { (partialResult: inout [CartModel], model) in
             guard let data = model.soldItem else { return }
             do {
-                let result = try JSONDecoder().decode([BasketModel].self, from: data)
+                let result = try JSONDecoder().decode([CartModel].self, from: data)
                 partialResult.append(contentsOf: result)
             } catch {
-                print("parsError",error.localizedDescription)
+                print("parsError",error)
             }
         }
-        completion(basketViewModels)
+        completion(cartModels)
     }
     
     

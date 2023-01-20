@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class BasketVC: UIViewController {
+class ShoppingCartVC: UIViewController {
     
     lazy var contentViewQRCode: UIView = {
         let view = UIView()
@@ -26,6 +26,15 @@ class BasketVC: UIViewController {
         imageView.addGestureRecognizer(gestureRecognizer)
         imageView.isUserInteractionEnabled = true
         imageView.image = UIImage(named: "qrscan")
+        imageView.layer.shadowColor = UIColor.purple.cgColor
+        imageView.layer.shadowOffset = .zero
+        imageView.layer.shadowOpacity = 0.84
+        imageView.layer.shadowRadius = 14
+        DispatchQueue.main.async {
+            imageView.layer.shadowPath = UIBezierPath(rect: CGRect(x: (imageView.frame.width * 0.25) - 20, y: (imageView.frame.height * 0.25) - 20, width: (imageView.frame.width * 0.5) + 40, height: (imageView.frame.height * 0.5) + 40)).cgPath
+        }
+        imageView.layer.shouldRasterize = true
+        imageView.layer.rasterizationScale = UIScreen.main.scale
         return imageView
     }()
     
@@ -38,7 +47,7 @@ class BasketVC: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .systemGray6
         tableView.rowHeight = 60
-        tableView.register(BasketCell.self)
+        tableView.register(ShoppingCartCell.self)
         return tableView
     }()
     
@@ -79,7 +88,7 @@ class BasketVC: UIViewController {
         print("I'm deinit: BasketVC")
     }
     
-    weak var basketVM: BasketViewModel!
+    weak var cartVM: ShoppingCartViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,25 +99,25 @@ class BasketVC: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        basketVM.viewDidDisappear()
+        cartVM.viewDidDisappear()
     }
     
     private func initViewModel() {
-        basketVM.onUpdate = { [weak self] in
+        cartVM.onUpdate = { [weak self] in
             self?.tableView.reloadData()
         }
-        basketVM.readPrice = { [weak self] in
-            self?.detailShoppingPrice.text = self?.basketVM.totalBasket.description
+        cartVM.readPrice = { [weak self] in
+            self?.detailShoppingPrice.text = self?.cartVM.totalCart.description
         }
     }
     
     @objc private func tappedSell() {
-        basketVM.tappedSell()
+        cartVM.tappedSell()
     }
     
     private func setupUI() {
         view.backgroundColor = .systemGray6
-        navigationItem.title = basketVM.title
+        navigationItem.title = cartVM.title
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -170,43 +179,43 @@ class BasketVC: UIViewController {
     
 }
 
-extension BasketVC: UITableViewDelegate, UITableViewDataSource {
+extension ShoppingCartVC: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return basketVM.numberOfRows()
+        return cartVM.numberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let basketModel = basketVM.modalAt(indexPath.row) else { fatalError("Don't make model at basket") }
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BasketCell.identifier, for: indexPath) as? BasketCell else { fatalError("Don't create cell") }
+        guard let cartModel = cartVM.modalAt(indexPath.row) else { fatalError("Don't make model at basket") }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ShoppingCartCell.identifier, for: indexPath) as? ShoppingCartCell else { fatalError("Don't create cell") }
         cell.loadTableView(delegate: self)
-        cell.update(basketModel)
+        cell.update(cartModel)
         return cell
     }
 }
 
-extension BasketVC: DidShowListDelegate {
+extension ShoppingCartVC: DidShowListDelegate {
     func showList(cell: UITableViewCell) {
         guard let index = tableView.indexPath(for: cell)?.row else { return }
-        basketVM.selectedIndex = index
-        basketVM.showList(index)
+        cartVM.selectedIndex = index
+        cartVM.showList(index)
     }
     
-    func selectProduct(vm: BasketModel) {
-        basketVM.updateBasket(vm)
+    func selectProduct(vm: CartModel) {
+        cartVM.updateCart(vm)
     }
     
-    func updatePrice(_ cell: UITableViewCell, _ vm: BasketModel) {
+    func updateQuantity(_ cell: UITableViewCell, _ vm: CartModel) {
         guard let index = tableView.indexPath(for: cell)?.row else { return }
-        basketVM.updatePrice(index,vm)
-        basketVM.readPrice()
+        cartVM.updatePrice(index,vm)
     }
-}
-
-
-extension BasketVC: UITextFieldDelegate {
+    
+    func updatePrice(_ cell: UITableViewCell, _ vm: CartModel) {
+        guard let index = tableView.indexPath(for: cell)?.row else { return }
+        cartVM.updatePrice(index, vm)
+    }
     
 }

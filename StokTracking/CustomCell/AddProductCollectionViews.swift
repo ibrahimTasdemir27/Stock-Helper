@@ -35,7 +35,7 @@ class AddProductCollectionViews : UICollectionViewCell {
         let textField = AttemptTextField()
         textField.textAlignment = .left
         textField.backgroundColor = .white
-        textField.textColor = .black
+        textField.textColor = .purple
         textField.layer.masksToBounds = true
         textField.layer.cornerRadius = 20
         textField.staticPadding(leftPadding: 15,rightPadding: 15)
@@ -64,6 +64,7 @@ class AddProductCollectionViews : UICollectionViewCell {
         imageView.image = UIImage(named: "minus")
         return imageView
     }()
+    
     var delegate: DidDeleteDelegate?
     
     deinit {
@@ -125,14 +126,16 @@ class AddProductCollectionViews : UICollectionViewCell {
         titleTextField.text = viewModel.title
         overviewTextView.text = viewModel.overview
         if index > 2 {
+            titleTextField.isUserInteractionEnabled = true
             deleteCell.isHidden = false
         }
         else {
+            titleTextField.isUserInteractionEnabled = false
             deleteCell.isHidden = true
         }
     }
     
-    func getDelegate<D: UITextViewDelegate & UITextFieldDelegate & DidDeleteDelegate>(delegate: D) {
+    func getDelegate<D: UITextViewDelegate & UITextFieldDelegate & DidDeleteDelegate>(delegate: D) { 
         self.titleTextField.delegate = delegate
         self.overviewTextView.delegate = delegate
         self.delegate = delegate

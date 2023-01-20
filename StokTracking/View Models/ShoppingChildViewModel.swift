@@ -8,42 +8,42 @@
 import Foundation
 
 
-final class BasketChildViewModel {
+final class ShoppingChildViewModel {
     
-    weak var coordinator: BasketCoordinator?
+    weak var coordinator: ShoppingCoordinator?
     var coreDataManager: CoreDataManager = .shared
-    var basketModels = [BasketModel]()
+    var cartModels = [CartModel]()
     
     var delegate: DidShowListDelegate?
     
     init() {
-        getBasket()
+        getCart()
     }
     
-    func getBasket() {
+    func getCart() {
         coreDataManager.parseStocks { featuresViewModels in
             featuresViewModels.forEach { featuresvm in
                 let image = featuresvm.imageName
                 let titleModel = featuresvm.titleModel.prefix(3)
                 let name = titleModel.first!.overview
                 let price = Double(titleModel[1].overview)!
-                let basketModel = BasketModel(image: image, name: name, price: price, quantity: 1)
-                self.basketModels.append(basketModel)
+                let cartModel = CartModel(image: image, name: name, price: price, quantity: 1)
+                self.cartModels.append(cartModel)
             }
         }
     }
     
     func numberOfRows() -> Int {
-        return self.basketModels.count
+        return self.cartModels.count
     }
     
     func modalAt(_ index: Int) -> String {
-        return self.basketModels[index].name
+        return self.cartModels[index].name
     }
     
     func selectRow(_ index: Int) {
         if let delegate = self.delegate {
-            delegate.selectProduct(vm: basketModels[index])
+            delegate.selectProduct(vm: cartModels[index])
         }
     }
     

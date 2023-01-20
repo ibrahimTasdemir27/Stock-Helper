@@ -61,8 +61,8 @@ final class FeaturesListViewModel {
         reload()
     }
     
-    func tappedBasket() {
-        coordinator?.tappedBasket()
+    func tappedCart() {
+        coordinator?.tappedCart()
     }
     
     func selectedItem(_ indexPath : Int) {

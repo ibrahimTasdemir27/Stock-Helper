@@ -11,11 +11,14 @@ import SnapKit
 
 class SystatisticChildCell: UITableViewCell {
     
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.adjustsFontSizeToFitWidth = true
+    lazy var titleLabel: PadLabel = {
+        let label = PadLabel()
+        label.edgeInset = UIEdgeInsets(top: .zero, left: 3, bottom: .zero, right: .zero)
         label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.adjustsFontSizeToFitWidth = true
+        label.textColor = .black
+        label.tintColor = .primaryColor
+        label.shadowLayer(color: .secondaryColor!,shadowRadius: 0.2, opacity: 0.22)
         return label
     }()
     
@@ -36,9 +39,9 @@ class SystatisticChildCell: UITableViewCell {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(5)
+            make.left.equalToSuperview()
             make.top.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.618)
+            make.width.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }

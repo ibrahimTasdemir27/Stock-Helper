@@ -26,4 +26,9 @@ extension String {
         //return empty
         return false
     }
+    
+    func isDouble() -> Bool {
+        guard Double(self) != nil else { return false }
+        return true
+    }
 }

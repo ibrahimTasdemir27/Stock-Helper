@@ -56,6 +56,9 @@ class SystatiscticViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 24
+        tableView.layer.contentsGravity = .topLeft
+        tableView.layer.cornerRadius = 8
+        tableView.backgroundColor = .red
         tableView.register(SystatisticChildCell.self)
         tableView.backgroundColor = .clear
         tableView.tag = 0

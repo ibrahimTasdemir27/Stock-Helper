@@ -8,18 +8,18 @@
 import UIKit
 
 
-class BasketChildVC: UIViewController {
+class ShoppingCartChildVC: UIViewController {
     
-    
-    var bottom:CGFloat!
-    weak var childVM: BasketChildViewModel!
+    var bottom: CGFloat!
+    weak var childVM: ShoppingChildViewModel!
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 40
-        tableView.register(BasketTableViewCell.self)
+        tableView.separatorEffect = .none
+        tableView.register(ShoppingTableViewCell.self)
         return tableView
     }()
     
@@ -29,20 +29,25 @@ class BasketChildVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        setupUI()
         setupHierarchy()
     }
     
-    func setupHierarchy() {
+    private func setupHierarchy() {
         view.addSubview(tableView)
-        let height = 40 * childVM.numberOfRows()
         
         tableView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().multipliedBy(bottom)
             make.left.equalToSuperview().offset(10)
             make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(height)
+            make.height.equalTo(200)
         }
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .clear
+        tableView.layer.masksToBounds = true
+        tableView.layer.cornerRadius = 14
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,7 +66,7 @@ class BasketChildVC: UIViewController {
     }
 }
 
-extension BasketChildVC: UITableViewDelegate, UITableViewDataSource {
+extension ShoppingCartChildVC: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -72,7 +77,7 @@ extension BasketChildVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let text = childVM.modalAt(indexPath.row)
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BasketTableViewCell.identifier, for: indexPath) as? BasketTableViewCell else { fatalError() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ShoppingTableViewCell.identifier, for: indexPath) as? ShoppingTableViewCell else { fatalError() }
         cell.titleLabel.text = text
         return cell
     }

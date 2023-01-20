@@ -33,6 +33,7 @@ class ArrangedProductVC: UIViewController {
     lazy var productImage : UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: arrangedVM.imageName)
+        imageView.shadowLayer()
         return imageView
     }()
     
@@ -42,14 +43,16 @@ class ArrangedProductVC: UIViewController {
         imageView.addGestureRecognizer(gestureRecognizer)
         imageView.isUserInteractionEnabled = true
         imageView.image = UIImage(named: "qrscan")
+        imageView.shadowLayer(opacity: 0.8)
         return imageView
     }()
     
     lazy var addCell: UIButton = {
         let button = UIButton()
-        button.tintColor = .secondaryColor
         button.setImage(Icons.plus.image.withConfiguration(Icons.plus.image.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
+        button.tintColor = .purple
+        button.shadowLayer()
         return button
     }()
     

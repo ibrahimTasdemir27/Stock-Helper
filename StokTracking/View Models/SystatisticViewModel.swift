@@ -20,7 +20,7 @@ class SystatisticViewModel: DidSelectDateDelegate {
     
     weak var coordinator: SystatisticCoordinator?
     
-    var soldItems = [BasketModel]()
+    var soldItems = [CartModel]()
     var showSold = [SystatisticView]()
     var backShowSold = [SystatisticView]()
     var totalWeekPrice: Double = .zero
@@ -82,7 +82,7 @@ class SystatisticViewModel: DidSelectDateDelegate {
     }
     
     var currentWeek: [Date] {
-        Date.getWeek()
+        Date().getWeek()
     }
     
     var currentMonth: [Date] {
@@ -94,8 +94,6 @@ class SystatisticViewModel: DidSelectDateDelegate {
         calendar.timeZone = .gmt
         return calendar
     }
-    
-    
     
     init() {
         self.coreDataManager = CoreDataManager.shared

@@ -51,4 +51,18 @@ extension UIView {
         shapeLayer.strokeEnd = CGFloat(0.8)
         self.layer.addSublayer(shapeLayer)
     }
+    
+    func shadowLayer(color: UIColor = .purple, shadowRadius: CGFloat = 10, opacity: Float = 1 )  {
+        self.layer.shadowColor = color.cgColor
+        self.layer.shadowRadius = shadowRadius
+        self.layer.shadowOpacity = opacity
+        self.layer.shadowOffset = .zero
+        DispatchQueue.main.async {
+            if let button = self as? UIButton { button.imageView?.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath } else {
+                self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+            }
+        }
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale
+    }
 }

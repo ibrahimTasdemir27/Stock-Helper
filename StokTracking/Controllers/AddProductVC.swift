@@ -45,9 +45,10 @@ class AddProductVC : UIViewController {
     }()
     lazy var addCell: UIButton = {
         let button = UIButton()
-        button.tintColor = .secondaryColor
         button.setImage(Icons.plus.image.withConfiguration(Icons.plus.image.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAddCell), for: .touchUpInside)
+        button.tintColor = .purple
+        button.shadowLayer()
         return button
     }()
     lazy var collectionView : UICollectionView = {

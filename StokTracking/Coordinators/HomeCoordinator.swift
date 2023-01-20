@@ -53,11 +53,11 @@ final class HomeCoordinator : Coordinator , ArrangeProductDelegate {
 
     }
     
-    func tappedBasket() {
-        let basketCoordinator = BasketCoordinator(navigationController)
-        basketCoordinator.start()
-        basketCoordinator.parentCoordinator = self
-        self.childCoordinators.append(basketCoordinator)
+    func tappedCart() {
+        let shoppingCoordinator = ShoppingCoordinator(navigationController)
+        shoppingCoordinator.start()
+        shoppingCoordinator.parentCoordinator = self
+        self.childCoordinators.append(shoppingCoordinator)
     }
     
     func arrengedItem(vm: FeaturesModel) {

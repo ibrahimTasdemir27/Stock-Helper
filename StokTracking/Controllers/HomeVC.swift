@@ -14,26 +14,18 @@ class HomeVC : UIViewController {
     }()
     lazy var plusProduct: UIButton = {
         let button = UIButton()
-        DispatchQueue.main.async {
-            button.layer.masksToBounds = true
-            button.layer.cornerRadius = button.frame.size.width / 2
-        }
-        button.backgroundColor = .systemGray6
         button.setImage(Icons.plus.image.withConfiguration(Icons.plus.image.config(40)), for: .normal)
         button.addTarget(self, action: #selector(tappedAdd), for: .touchUpInside)
-        button.tintColor = .secondaryColor
+        button.tintColor = .purple
+        button.shadowLayer()
         return button
     }()
-    lazy var shoppingBasket: UIButton = {
+    lazy var shoppingCart: UIButton = {
         let button = UIButton()
-        DispatchQueue.main.async {
-            button.layer.masksToBounds = true
-            button.layer.cornerRadius = button.frame.size.width / 2
-        }
-        button.backgroundColor = .systemGray6
         button.setImage(Icons.shopping.image.withConfiguration(Icons.shopping.image.config(40)), for: .normal)
-        button.addTarget(self, action: #selector(tappedBasket), for: .touchUpInside)
-        button.tintColor = .secondaryColor
+        button.addTarget(self, action: #selector(tappedCart), for: .touchUpInside)
+        button.tintColor = .purple
+        button.shadowLayer()
         return button
     }()
     
@@ -47,7 +39,7 @@ class HomeVC : UIViewController {
         initViewModel()
         setupUI()
         setupHierarchy()
-
+    
     }
     
     
@@ -65,8 +57,9 @@ class HomeVC : UIViewController {
     }
     
     private func setupHierarchy() {
+        
         view.addSubview(tableView)
-        view.addSubview(shoppingBasket)
+        view.addSubview(shoppingCart)
         view.addSubview(plusProduct)
     
         tableView.snp.makeConstraints { make in
@@ -74,7 +67,7 @@ class HomeVC : UIViewController {
             make.width.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-        shoppingBasket.snp.makeConstraints { make in
+        shoppingCart.snp.makeConstraints { make in
             make.top.equalTo(view.layoutMarginsGuide.snp.top).offset(20)
             make.right.equalTo(view.layoutMarginsGuide.snp.right)
             make.height.width.equalTo(60)
@@ -90,8 +83,8 @@ class HomeVC : UIViewController {
         viewModel.tappedAdd()
     }
     
-    @objc private func tappedBasket() {
-        viewModel.tappedBasket()
+    @objc private func tappedCart() {
+        viewModel.tappedCart()
     }
 }
 

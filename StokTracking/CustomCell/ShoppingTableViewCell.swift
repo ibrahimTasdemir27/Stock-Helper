@@ -7,15 +7,16 @@
 
 import UIKit
 
-class BasketTableViewCell: UITableViewCell {
+class ShoppingTableViewCell: UITableViewCell {
     
     lazy var titleLabel: PadLabel = {
         let label = PadLabel()
-        label.backgroundColor = .white
-        label.textColor = .black
-        label.textAlignment = .center
+        label.textColor = .purple
+        label.tintColor = .primaryColor
+        label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         label.edgeInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        label.shadowLayer(shadowRadius: 0.2, opacity: 0.1)
         return label
     }()
     

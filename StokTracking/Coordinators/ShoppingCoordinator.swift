@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class BasketCoordinator: Coordinator {
+final class ShoppingCoordinator: Coordinator {
     private(set) var childCoordinators: [Coordinator] = []
     
     private let navigationController: UINavigationController
@@ -17,17 +17,17 @@ final class BasketCoordinator: Coordinator {
     init(_ navigationCommander: UINavigationController) {
         self.navigationController = navigationCommander
     }
-    let basketVC = BasketVC()
-    let basketVM = BasketViewModel()
-    let childVM = BasketChildViewModel()
+    let cartVC = ShoppingCartVC()
+    let cartVM = ShoppingCartViewModel()
+    let childVM = ShoppingChildViewModel()
     
     func start() {
-        basketVC.basketVM = basketVM
-        basketVM.coordinator = self
+        cartVC.cartVM = cartVM
+        cartVM.coordinator = self
         childVM.coordinator = self
-        childVM.delegate = basketVC
+        childVM.delegate = cartVC
         self.modalNavigationController = UINavigationController()
-        self.modalNavigationController?.setViewControllers([basketVC], animated: true)
+        self.modalNavigationController?.setViewControllers([cartVC], animated: true)
         if let modalNavigationController = modalNavigationController {
             navigationController.present(modalNavigationController, animated: true)
         }
@@ -36,14 +36,14 @@ final class BasketCoordinator: Coordinator {
     func prepareChild(_ index: Int) {
         let navBarHeight = UIApplication.shared.statusBarHeight + (navigationController.navigationBar.frame.height)
         let screenHeigtPercentOne = screenHeight / 100
-        let contentOffset = (basketVC.tableView.contentOffset.y / screenHeigtPercentOne) / 100
-        let tableViewRowheight = basketVC.tableView.rowHeight
-        let child = BasketChildVC()
+        let contentOffset = (cartVC.tableView.contentOffset.y / screenHeigtPercentOne) / 100
+        let tableViewRowheight = cartVC.tableView.rowHeight
+        let child = ShoppingCartChildVC()
         child.childVM = childVM
         child.bottom = (((navBarHeight + 12) + CGFloat(index + 1) * tableViewRowheight) / screenHeigtPercentOne) / 100 + 0.26 - contentOffset
-        basketVC.view.addSubview(child.view)
-        basketVC.addChild(child)
-        child.didMove(toParent: basketVC)
+        cartVC.view.addSubview(child.view)
+        cartVC.addChild(child)
+        child.didMove(toParent: cartVC)
     }
     
     func viewDidDisappear() {

@@ -12,17 +12,7 @@ class SystatisticDetailCell: UITableViewCell {
     
     lazy var productImage: UIImageView = {
         let imageView = UIImageView()
-        //imageView.contentMode = .scaleAspectFill
-        imageView.layer.shadowColor = UIColor.purple.cgColor
-        imageView.layer.shadowRadius = 5
-        imageView.layer.shadowOffset = .zero
-        DispatchQueue.main.async {
-            //imageView.layer.cornerRadius = imageView.frame.width / 2
-            imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
-        }
-        imageView.layer.shouldRasterize = true
-        imageView.layer.shadowOpacity = 1
-        imageView.layer.rasterizationScale = UIScreen.main.scale
+        imageView.shadowLayer(shadowRadius: 5)
         return imageView
     }()
     
@@ -54,6 +44,7 @@ class SystatisticDetailCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         setupHierarchy()
     }
     

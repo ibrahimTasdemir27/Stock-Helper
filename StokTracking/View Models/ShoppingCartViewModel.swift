@@ -8,14 +8,18 @@
 import Foundation
 
 
-final class BasketViewModel {
+final class ShoppingCartViewModel {
     
     let title = "Sepetim"
     
-    weak var coordinator: BasketCoordinator?
+    weak var coordinator: ShoppingCoordinator?
     var coreDataManager: CoreDataManager = .shared
     
-    var basketModels = [BasketModel]()
+    var cartModels = [CartModel]() {
+        didSet {
+            
+        }
+    }
     
     var onUpdate = {}
     
@@ -30,48 +34,51 @@ final class BasketViewModel {
     
     
     func numberOfRows() -> Int {
-        return self.basketModels.count + 1
+        return self.cartModels.count + 1
     }
     
     func showList(_ index: Int) {
         coordinator?.prepareChild(index)
     }
     
-    func updateBasket(_ vm: BasketModel) {
-        if basketModels.count == selectedIndex {
-            self.basketModels.append(vm)
+    func updateCart(_ vm: CartModel) {
+        if cartModels.count == selectedIndex {
+            print("Append")
+            self.cartModels.append(vm)
         } else {
-            self.basketModels[selectedIndex] = vm
+            print("Update")
+            self.cartModels[selectedIndex] = vm
         }
         onUpdate()
         readPrice()
     }
     
-    func updatePrice(_ index: Int, _ vm: BasketModel) {
-        self.basketModels[index] = vm
+    func updatePrice(_ index: Int, _ vm: CartModel) {
+        if index != cartModels.count { cartModels[index] = vm }
+        readPrice()
     }
     
     func updateDate() {
-        for i in .zero...basketModels.count - 1 {
+        for i in .zero...cartModels.count - 1 {
             let date = Date.getGmt(from: .gmt)
 //            let newDate = date.addingTimeInterval(TimeInterval(60*60*24*10))
 //            print("isNewDate",newDate)
-            basketModels[i].date = date
+            cartModels[i].date = date
         }
     }
     
     func tappedSell() {
         updateDate()
-        coreDataManager.isSell(self.basketModels)
-        self.basketModels.forEach { basketModel in
-            sellUpdate(vm: basketModel)
+        coreDataManager.isSell(self.cartModels)
+        self.cartModels.forEach { cartModel in
+            sellUpdate(vm: cartModel)
         }
         coordinator?.didFinish()
     }
     
-    func sellUpdate(vm: BasketModel) {
+    func sellUpdate(vm: CartModel) {
         coreDataManager.parseStocks { featuresViewModels in
-            for i in .zero...featuresViewModels.count - 1 {
+            for i in .zero..<featuresViewModels.count {
                 var featureViewModel = featuresViewModels[i]
                 let titleModel = featureViewModel.titleModel.prefix(3)
                 if titleModel.first?.overview == vm.name {
@@ -92,8 +99,8 @@ final class BasketViewModel {
         return quantity - quantitySold
     }
     
-    var totalBasket: Double {
-        basketModels.reduce(.zero) { value,vm in
+    var totalCart: Double {
+        cartModels.reduce(.zero) { value,vm in
             return value + vm.price * vm.quantity
         }
     }
@@ -113,11 +120,11 @@ final class BasketViewModel {
         }
     }
     
-    func modalAt(_ index: Int) -> BasketModel? {
-        if index == basketModels.count {
-            return BasketModel(image: "", name: "", price: 0, quantity: 1)
+    func modalAt(_ index: Int) -> CartModel? {
+        if index == cartModels.count {
+            return CartModel(image: "", name: "", price: 0, quantity: 1)
         }
-        return basketModels[index]
+        return cartModels[index]
     }
     
     func viewDidDisappear() {
@@ -129,7 +136,7 @@ final class BasketViewModel {
     }
 }
 
-struct BasketModel: Codable {
+struct CartModel: Codable {
     let image: String
     let name: String
     var price: Double
@@ -143,7 +150,11 @@ struct BasketModel: Codable {
         self.quantity = quantity
     }
     
-    mutating func updateQuantity(quantity: String) {
-        self.quantity = Double(quantity)!
+    mutating func updateQuantity(_ quantity: Double) {
+        self.quantity = quantity
+    }
+    
+    mutating func updatePrice(_ price: Double) {
+        self.price = price
     }
 }

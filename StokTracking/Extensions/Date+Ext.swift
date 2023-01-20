@@ -31,7 +31,15 @@ extension Date {
     }
     
     func firstOfDayMonth() -> Date {
+        print("FirstDay",firstOfDayWeek())
         return calendar.date(from: Calendar.current.dateComponents([.year,.month], from: self))!.addingTimeInterval(TimeInterval(60*60*24))
+    }
+    
+    func firstOfDayWeek() -> Date {
+        var comps = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: self)
+        comps.weekday = 2
+        let monday = calendar.date(from: comps)
+        return monday!
     }
     
     func getMonthAllDays() -> [Date] {
@@ -48,14 +56,14 @@ extension Date {
     
     //MARK: -> This Week
     
-    static func getWeek() -> [Date] {
-        let dateInWeek = Date()
-        var calendar = Calendar.current
-        calendar.timeZone = .gmt
-        let dayOfWeek = calendar.component(.weekday, from: dateInWeek) - 2
-        let weekdays = calendar.range(of: .weekday, in: .weekOfYear, for: dateInWeek)!
-        let days = (weekdays.lowerBound ..< weekdays.upperBound)
-            .compactMap { calendar.date(byAdding: .day, value: $0 - dayOfWeek, to: dateInWeek) }
+    func getWeek() -> [Date] {
+        var days = [Date]()
+        var isMonday = firstOfDayWeek()
+        let range = calendar.range(of: .day, in: .weekOfMonth, for: isMonday)!
+        for _ in range.lowerBound..<range.upperBound {
+            days.append(isMonday)
+            isMonday = isMonday.addingTimeInterval(60*60*24)
+        }
         return days
     }
     
